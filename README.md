@@ -57,7 +57,7 @@ output_header 	: the header of all the output file, *eg: HCT116*
 scripts_dir 	: the directory of all the scripts in the package( enclosed in the `.zip` file)
 
 
-### step1: create_track_Ribo.sh
+### Determine P-site and create P-site track on transcript level 
 
 ```
 Usage: ./create_track_Ribo.sh <Ribo_bam> <annotation_dir> <out_dir> <output_header> <scripts_dir>
@@ -75,7 +75,7 @@ This step determine the P-site position for each read length by overlapping with
 *$out_dir/bedgraph/$header/final.psite* 	: the created P-sites track of each transcripts 
 
 
-### step2: main_function.sh
+### Predict ORF translation
 
 ```
 Usage: ./main_function.bash <annotation_dir> <out_dir> <output_header> <scripts_dir>
@@ -90,7 +90,7 @@ This step takes the information from the P-site track for each transcript and pr
 *$out_dir/out/$header.TR.psites.000.cv* 	: reads coverage of ORFs
 
 
-### step3: translated_protein_annotation.sh
+### Identify translated ORF
 
 ```
 Usage: ./translated_protein_annotation.sh <annotation_dir> <out_dir> <output_header> <scripts_dir>
