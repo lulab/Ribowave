@@ -35,12 +35,12 @@ methods
 wmtsa
 
 
-######### Before running 
+### Before running 
 
 It is recommanded to make a new directory and move the Ribo-seq bam file into that directory;
 
 
-######################### workflow
+### workflow
 
 -----	Arguments:
 
