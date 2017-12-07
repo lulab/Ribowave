@@ -5,17 +5,17 @@ RiboWave is a funtional Ribo-seq analysis tools to identify translated ORF based
 
 The RiboWave workflow consists of:
 
-0) Create the annotation file for the subsequent analysis. [create_annotation.sh]
+* Create the annotation file for the subsequent analysis. [`create_annotation.sh`]
 
-1) Determine the P-site position of Ribo-seq. [create_track_Ribo.sh]
+* Determine the P-site position of Ribo-seq. [`create_track_Ribo.sh`]
 
-2) Generate P-site tracks from Ribo-seq, dependent on P-sites calculation cutoffs.[create_track_Ribo.sh]
+* Generate P-site tracks from Ribo-seq, dependent on P-sites calculation cutoffs.[`create_track_Ribo.sh`]
 
-3) Predicting translating ORFs [main_function.sh]
+* Predicting translating ORFs [`main_function.sh`]
 
-4) Predict the final protein product based on results from step3 [translated_protein_annotation.sh]
+* Predict the final protein product based on results from step3 [`translated_protein_annotation.sh`]
 
-5) Customize the output by annotating the relative position of translating ORFs. [translated_protein_annotation.sh]
+* Customize the output by annotating the relative position of translating ORFs. [`translated_protein_annotation.sh`]
 
 
 ######################### Requirements
