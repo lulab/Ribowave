@@ -18,7 +18,7 @@ The RiboWave workflow consists of:
 * Customize the output by annotating the relative position of translating ORFs. [`translated_protein_annotation.sh`]
 
 
-######################### Requirements
+## Requirements
 ### software
 R 
 
@@ -34,12 +34,12 @@ methods
 
 wmtsa
 
-### Before running 
+## Before running 
 
 It is **recommanded** to make a new directory and move the Ribo-seq bam file into that directory;
 
 
-### workflow
+## workflow
 
 -----	Arguments:
 
