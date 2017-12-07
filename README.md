@@ -19,11 +19,11 @@ The RiboWave workflow consists of:
 
 
 ######################### Requirements
-### software
+###                                                     software
 R [ must be in the PATH ]
 
 bedtools v2.25.0 [ must be in the PATH ]
-### R package
+###                                                     R package
 reshape
 
 ggplot2
@@ -35,12 +35,12 @@ methods
 wmtsa
 
 
-### Before running 
+###                                                  Before running 
 
 It is recommanded to make a new directory and move the Ribo-seq bam file into that directory;
 
 
-### workflow
+###                                                     workflow
 
 -----	Arguments:
 
@@ -55,7 +55,7 @@ output_header 	: the header of all the output file, eg: HCT116
 scripts_dir 	: the directory of all the scripts in the package( enclosed in the .zip file)
 
 
-### step1: create_track_Ribo.sh
+###                                             step1: create_track_Ribo.sh
 
 Usage: ./create_track_Ribo.sh <Ribo_bam> <annotation_dir> <out_dir> <output_header> <scripts_dir>
 
