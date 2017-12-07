@@ -69,9 +69,9 @@ This step determine the P-site position for each read length by overlapping with
 #### Output files:
 **`P-site`** directory, including :
 
-* $header.psite1nt.txt 	: the P-sites position for each length
+* _header_.psite1nt.txt 	: the P-sites position for each length
 
-* $header.psite.pdf 	: the pdf displaying the histogram of aggregated reads
+* _header_.psite.pdf 	: the pdf displaying the histogram of aggregated reads
 
 * final.psite 	: the created P-sites track of each transcripts 
 
@@ -87,9 +87,9 @@ This step takes the information from the P-site track for each transcript and pr
 #### Output files:
 **`out`** directory, including :
 
-* $header.TR.psites.* 	: the features of ORFs including chi-square P-value information
+* _header_.TR.psites.* 	: the features of ORFs including chi-square P-value information
 
-* $header.TR.psites.*.cv	: reads coverage of ORFs
+* _header_.TR.psites.*.cv	: reads coverage of ORFs
 
 
 ### Identify translated ORF
@@ -102,15 +102,15 @@ This step incorporates all the information from each ORF and find ORFs that are 
 
 #### Output files:
 
-* $header.mx 			: the combined information of all ORFs including chi-square P-value information and coverage information
+* _header_.mx 			: the combined information of all ORFs including chi-square P-value information and coverage information
 
 **`result`** directory, including :
 
-* $header.95%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.05
+* _header_.95%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.05
 
-* $header.99%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.01
+* _header_.99%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.01
 
-* $header.95.ORF_category : annotate ORFs in $header.95%.mx by the relative position of the annotated ORF and customize the output
+* _header_.95.ORF_category : annotate ORFs in $header.95%.mx by the relative position of the annotated ORF and customize the output
 
-* $header.99.ORF_category : annotate ORFs in $header.99%.mx by the relative position of the annotated ORF and customize the output
+* _header_.99.ORF_category : annotate ORFs in $header.99%.mx by the relative position of the annotated ORF and customize the output
 
