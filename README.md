@@ -108,9 +108,5 @@ This step incorporates all the information from each ORF and find ORFs that are 
 
 * _header_.95%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.05
 
-* _header_.99%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.01
-
-* _header_.95.ORF_category : annotate ORFs in $header.95%.mx by the relative position of the annotated ORF and customize the output
-
-* _header_.99.ORF_category : annotate ORFs in $header.99%.mx by the relative position of the annotated ORF and customize the output
+* _header_.95%.ORF_category : annotate ORFs in $header.95%.mx by the relative position of the annotated ORF and customize the output
 
