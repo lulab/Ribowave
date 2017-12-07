@@ -40,21 +40,21 @@ It is **recommanded** to make a new directory and move the Ribo-seq bam file int
 
 ## workflow
 
------	Arguments:
+#### Arguments:
 
-Ribo_bam 	: alignments of Ribo-seq followed by elimination of alignments flagged as secondary alignments to ensure one genomic position for one single 
+- Ribo_bam 	: alignments of Ribo-seq followed by elimination of alignments flagged as secondary alignments to ensure one genomic position for one single 
 
-annotation_dir  : 
+- annotation_dir  : 
 1.annotation directory enclosed in the (`.zip`) file with all ORFs scanned `final.ORFs.annot3` 
 2.annotated start site `start_codon.bed` 
 3.genome size `genome` 
 4.exon annotation gtf `exons.gtf`
 
-out_dir 	: the directory of the output result, *eg: HCT116_test*
+- out_dir 	: the directory of the output result, *eg: HCT116_test*
 
-output_header 	: the header of all the output file, *eg: HCT116* 
+- output_header 	: the header of all the output file, *eg: HCT116* 
 
-scripts_dir 	: the directory of all the scripts in the package( enclosed in the `.zip` file)
+- scripts_dir 	: the directory of all the scripts in the package( enclosed in the `.zip` file)
 
 
 ### Determine P-site and create P-site track on transcript level 
@@ -66,7 +66,7 @@ Usage: ./create_track_Ribo.sh <Ribo_bam> <annotation_dir> <out_dir> <output_head
 This step determine the P-site position for each read length by overlapping with the annotated start codon and generate P-site track for each transcript.
 
 
------Output files:
+#### Output files:
 
 *$out_dir/P-site/$header.psite1nt.txt* 	: the P-sites position for each length
 
@@ -83,7 +83,7 @@ Usage: ./main_function.bash <annotation_dir> <out_dir> <output_header> <scripts_
 
 This step takes the information from the P-site track for each transcript and predict the translation status for each ORF.
 
------Output files:
+#### Output files:
 
 *$out_dir/out/$header.TR.psites.000* 	: the features of ORFs including chi-square P-value information
 
@@ -98,7 +98,7 @@ Usage: ./translated_protein_annotation.sh <annotation_dir> <out_dir> <output_hea
 
 This step incorporates all the information from each ORF and find ORFs that are predicted to be translated ( P-value < 0.05) 
 
------Output files:
+#### Output files:
 
 *$out_dir/$header.mx* 			: the combined information of all ORFs including chi-square P-value information and coverage information
 
