@@ -47,9 +47,9 @@ Ribo_bam 	: alignments of Ribo-seq followed by elimination of alignments flagged
 
 annotation_dir  : annotation directory enclosed in the (.zip) file with all ORFs scanned [final.ORFs.annot3] , annotated start site [start_codon.bed] , genome size [genome] and exon annotation gtf [exons.gtf]
 
-out_dir 	: the directory of the output result
+out_dir 	: the directory of the output result, eg: HCT116_test
 
-output_header 	: the header of all the output file
+output_header 	: the header of all the output file, eg: HCT116
 
 scripts_dir 	: the directory of all the scripts in the package( enclosed in the .zip file)
 
@@ -57,6 +57,8 @@ scripts_dir 	: the directory of all the scripts in the package( enclosed in the 
 ### step1: create_track_Ribo.sh
 
 Usage: ./create_track_Ribo.sh <Ribo_bam> <annotation_dir> <out_dir> <output_header> <scripts_dir>
+
+This step determine the P-site position for each read length by overlapping with the annotated start codon and generate P-site track for each transcript.
 
 
 -----Output files:
@@ -72,6 +74,7 @@ $out_dir/bedgraph/$header/final.psite 	: the created P-sites track of each trans
 
 Usage: ./main_function.bash <annotation_dir> <out_dir> <output_header> <scripts_dir>
 
+This step takes the information from the P-site track for each transcript and predict the translation status for each ORF.
 
 -----Output files:
 
@@ -84,6 +87,7 @@ $out_dir/out/$header.TR.psites.*.cv 	: reads coverage of ORFs
 
 Usage: ./translated_protein_annotation.sh <annotation_dir> <out_dir> <output_header> <scripts_dir>
 
+This step incorporates all the information from each ORF and find ORFs that are predicted to be translated ( P-value < 0.05) 
 
 -----Output files:
 
