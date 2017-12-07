@@ -50,9 +50,9 @@ It is **recommanded** to make a new directory and move the Ribo-seq bam file int
   - 3.genome size `genome` 
   - 4.exon annotation gtf `exons.gtf`
 
-- out_dir 	: the directory of the output result, *eg: HCT116_test*
+- out_dir 	: the directory of the output result, *`eg: HCT116_test`*
 
-- output_header 	: the header of all the output file, *eg: HCT116* 
+- output_header 	: the header of all the output file, *`eg: HCT116`* 
 
 - scripts_dir 	: the directory of all the scripts in the package( enclosed in the `.zip` file)
 
