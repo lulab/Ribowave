@@ -54,7 +54,7 @@ output_header 	: the header of all the output file
 scripts_dir 	: the directory of all the scripts in the package( enclosed in the .zip file)
 
 
-### step0: create_track_Ribo.sh
+### step1: create_track_Ribo.sh
 
 Usage: ./create_track_Ribo.sh <Ribo_bam> <annotation_dir> <out_dir> <output_header> <scripts_dir>
 
@@ -68,7 +68,7 @@ $out_dir/P-site/$header.psite.pdf 	: the pdf displaying the histogram of aggrega
 $out_dir/bedgraph/$header/final.psite 	: the created P-sites track of each transcripts 
 
 
-### step1: main_function.sh
+### step2: main_function.sh
 
 Usage: ./main_function.bash <annotation_dir> <out_dir> <output_header> <scripts_dir>
 
@@ -80,7 +80,7 @@ $out_dir/out/$header.TR.psites.* 	: the features of ORFs including chi-square P-
 $out_dir/out/$header.TR.psites.*.cv 	: reads coverage of ORFs
 
 
-### step2: translated_protein_annotation.sh
+### step3: translated_protein_annotation.sh
 
 Usage: ./translated_protein_annotation.sh <annotation_dir> <out_dir> <output_header> <scripts_dir>
 
