@@ -19,19 +19,19 @@ The RiboWave workflow consists of:
 
 ## Requirements
 ### software
-R 
+* R 
 
-bedtools v2.25.0 
+* bedtools v2.25.0 
 ### R packages
-reshape
+* reshape
 
-ggplot2
+* ggplot2
 
-rhdf5
+* rhdf5
 
-methods
+* methods
 
-wmtsa
+* wmtsa
 
 ## Before running 
 
@@ -67,13 +67,13 @@ This step determine the P-site position for each read length by overlapping with
 
 
 #### Output files:
-`**P-site**` directory, including :
+**`P-site`** directory, including :
 
-$header.psite1nt.txt 	: the P-sites position for each length
+* $header.psite1nt.txt 	: the P-sites position for each length
 
-$header.psite.pdf 	: the pdf displaying the histogram of aggregated reads
+* $header.psite.pdf 	: the pdf displaying the histogram of aggregated reads
 
-final.psite 	: the created P-sites track of each transcripts 
+* final.psite 	: the created P-sites track of each transcripts 
 
 
 ### Predict ORF translation
@@ -85,11 +85,11 @@ Usage: ./main_function.bash <annotation_dir> <out_dir> <output_header> <scripts_
 This step takes the information from the P-site track for each transcript and predict the translation status for each ORF.
 
 #### Output files:
-`**out**` directory, including :
+**`out`** directory, including :
 
-$header.TR.psites.* 	: the features of ORFs including chi-square P-value information
+* $header.TR.psites.* 	: the features of ORFs including chi-square P-value information
 
-$header.TR.psites.*.cv	: reads coverage of ORFs
+* $header.TR.psites.*.cv	: reads coverage of ORFs
 
 
 ### Identify translated ORF
@@ -102,14 +102,15 @@ This step incorporates all the information from each ORF and find ORFs that are 
 
 #### Output files:
 
-$header.mx 			: the combined information of all ORFs including chi-square P-value information and coverage information
+* $header.mx 			: the combined information of all ORFs including chi-square P-value information and coverage information
 
-`**result**` directory, including :
-$header.95%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.05
+**`result`** directory, including :
 
-$header.99%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.01
+* $header.95%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.05
 
-$header.95.ORF_category : annotate ORFs in $header.95%.mx by the relative position of the annotated ORF and customize the output
+* $header.99%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.01
 
-$header.99.ORF_category : annotate ORFs in $header.99%.mx by the relative position of the annotated ORF and customize the output
+* $header.95.ORF_category : annotate ORFs in $header.95%.mx by the relative position of the annotated ORF and customize the output
+
+* $header.99.ORF_category : annotate ORFs in $header.99%.mx by the relative position of the annotated ORF and customize the output
 
