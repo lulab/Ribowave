@@ -20,10 +20,10 @@ The RiboWave workflow consists of:
 
 ######################### Requirements
 ### software
-R [ must be in the PATH ]
+R 
 
-bedtools v2.25.0 [ must be in the PATH ]
-### R package
+bedtools v2.25.0 
+### R packages
 reshape
 
 ggplot2
@@ -33,7 +33,6 @@ rhdf5
 methods
 
 wmtsa
-
 
 ### Before running 
 
