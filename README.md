@@ -18,12 +18,10 @@ The RiboWave workflow consists of:
 5) Customize the output by annotating the relative position of translating ORFs. [translated_protein_annotation.sh]
 
 
-######################### Requirements
-### software
+######################### Requirements### software
 R [ must be in the PATH ]
 
 bedtools v2.25.0 [ must be in the PATH ]
-
 ### R package
 reshape
 
