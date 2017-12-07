@@ -42,7 +42,7 @@ It is **recommanded** to make a new directory and move the Ribo-seq bam file int
 
 #### Arguments:
 
-- Ribo_bam 	: alignments of Ribo-seq followed by elimination of alignments flagged as secondary alignments to ensure one genomic position for one single 
+- Ribo_bam 	: alignments of Ribo-seq followed by elimination of alignments flagged as secondary alignments to ensure one genomic position for one single read
 
 - annotation_dir  : 
   - 1.annotation directory enclosed in the (`.zip`) file with all ORFs scanned `final.ORFs.annot3` 
@@ -67,12 +67,13 @@ This step determine the P-site position for each read length by overlapping with
 
 
 #### Output files:
+`P-site` directory, including :
 
-*$out_dir/P-site/$header.psite1nt.txt* 	: the P-sites position for each length
+$header.psite1nt.txt 	: the P-sites position for each length
 
-*$out_dir/P-site/$header.psite.pdf* 	: the pdf displaying the histogram of aggregated reads
+$header.psite.pdf 	: the pdf displaying the histogram of aggregated reads
 
-*$out_dir/bedgraph/$header/final.psite* 	: the created P-sites track of each transcripts 
+final.psite 	: the created P-sites track of each transcripts 
 
 
 ### Predict ORF translation
@@ -84,10 +85,11 @@ Usage: ./main_function.bash <annotation_dir> <out_dir> <output_header> <scripts_
 This step takes the information from the P-site track for each transcript and predict the translation status for each ORF.
 
 #### Output files:
+`out` directory, including :
 
-*$out_dir/out/$header.TR.psites.000* 	: the features of ORFs including chi-square P-value information
+$header.TR.psites.* 	: the features of ORFs including chi-square P-value information
 
-*$out_dir/out/$header.TR.psites.000.cv* 	: reads coverage of ORFs
+$header.TR.psites.*.cv	: reads coverage of ORFs
 
 
 ### Identify translated ORF
@@ -100,13 +102,14 @@ This step incorporates all the information from each ORF and find ORFs that are 
 
 #### Output files:
 
-*$out_dir/$header.mx* 			: the combined information of all ORFs including chi-square P-value information and coverage information
+$header.mx 			: the combined information of all ORFs including chi-square P-value information and coverage information
 
-*$out_dir/result/ATG/$header.95%.mx* 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.05
+`result/ATG` directory, including :
+$header.95%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.05
 
-*$out_dir/result/ATG/$header.99%.mx* 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.01
+$header.99%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.01
 
-*$out_dir/result/ATG/$header.95.ORF_category* : annotate ORFs in $header.95%.mx by the relative position of the annotated ORF and customize the output
+$header.95.ORF_category : annotate ORFs in $header.95%.mx by the relative position of the annotated ORF and customize the output
 
-*$out_dir/result/ATG/$header.99.ORF_category* : annotate ORFs in $header.99%.mx by the relative position of the annotated ORF and customize the output
+$header.99.ORF_category : annotate ORFs in $header.99%.mx by the relative position of the annotated ORF and customize the output
 
