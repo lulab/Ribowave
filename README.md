@@ -67,7 +67,7 @@ This step determine the P-site position for each read length by overlapping with
 
 
 #### Output files:
-`P-site` directory, including :
+`**P-site**` directory, including :
 
 $header.psite1nt.txt 	: the P-sites position for each length
 
@@ -85,7 +85,7 @@ Usage: ./main_function.bash <annotation_dir> <out_dir> <output_header> <scripts_
 This step takes the information from the P-site track for each transcript and predict the translation status for each ORF.
 
 #### Output files:
-`out` directory, including :
+`**out**` directory, including :
 
 $header.TR.psites.* 	: the features of ORFs including chi-square P-value information
 
@@ -104,7 +104,7 @@ This step incorporates all the information from each ORF and find ORFs that are 
 
 $header.mx 			: the combined information of all ORFs including chi-square P-value information and coverage information
 
-`result/ATG` directory, including :
+`**result**` directory, including :
 $header.95%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.05
 
 $header.99%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.01
