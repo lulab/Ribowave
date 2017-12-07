@@ -1,6 +1,5 @@
-Dear user,
+# RiboWave 
 
-This is a guide of RiboWave explaining how to execute the pipeline.
 RiboWave is a funtional Ribo-seq analysis tools to identify translated ORF based on Ribo-seq data.
 
 The RiboWave workflow consists of:
