@@ -44,7 +44,11 @@ It is **recommanded** to make a new directory and move the Ribo-seq bam file int
 
 Ribo_bam 	: alignments of Ribo-seq followed by elimination of alignments flagged as secondary alignments to ensure one genomic position for one single 
 
-annotation_dir  : annotation directory enclosed in the (`.zip`) file with all ORFs scanned `final.ORFs.annot3` , annotated start site `start_codon.bed` , genome size `genome` and exon annotation gtf `exons.gtf`
+annotation_dir  : 
+  -1.annotation directory enclosed in the (`.zip`) file with all ORFs scanned `final.ORFs.annot3` 
+  -2.annotated start site `start_codon.bed` 
+  -3.genome size `genome` 
+  -4.exon annotation gtf `exons.gtf`
 
 out_dir 	: the directory of the output result, *eg: HCT116_test*
 
