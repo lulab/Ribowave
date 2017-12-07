@@ -1,6 +1,6 @@
 # RiboWave 
 
-RiboWave is a funtional Ribo-seq analysis tools to identify translated ORF based on Ribo-seq data.
+RiboWave is a funtional Ribo-seq analysis tool to identify translated ORF based on Ribo-seq data.
 
 The RiboWave workflow consists of:
 
