@@ -25,9 +25,13 @@ bedtools v2.25.0 [ must be in the PATH ]
 
 ### R package
 reshape
+
 ggplot2
+
 rhdf5
+
 methods
+
 wmtsa
 
 ######### Before running 
