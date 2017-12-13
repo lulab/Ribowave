@@ -6,16 +6,13 @@ The RiboWave workflow consists of:
 
 * Create the annotation file for the subsequent analysis. [`create_annotation.sh`]
 
-* Determine the P-site position of Ribo-seq. [`create_track_Ribo.sh`]
+* Determine the P-site position of Ribo-seq. [`P-site_determination.sh`]
 
 * Generate P-site tracks from Ribo-seq, dependent on P-sites calculation cutoffs.[`create_track_Ribo.sh`]
 
 * Predicting translating ORFs [`main_function.sh`]
 
-* Predict the final protein product based on results from step3 [`translated_protein_annotation.sh`]
-
-* Customize the output by annotating the relative position of translating ORFs. [`translated_protein_annotation.sh`]
-
+* Predict translated ORF and annotating translatome [`translated_protein_annotation.sh`]
 
 ## Requirements
 ### software
@@ -35,6 +32,8 @@ The RiboWave workflow consists of:
 
 ## Before running 
 
+It is **necessary** to eliminate alignments that flagged as secondary alignments to ensure one genomic position for one single read;
+
 It is **recommanded** to make a new directory and move the Ribo-seq bam file into that directory;
 
 
@@ -42,71 +41,86 @@ It is **recommanded** to make a new directory and move the Ribo-seq bam file int
 
 #### Arguments:
 
-- Ribo_bam 	: alignments of Ribo-seq followed by elimination of alignments flagged as secondary alignments to ensure one genomic position for one single read
+- Ribo_bam 	: secondary alignment removed and sorted
 
 - annotation_dir  : 
-  - 1.annotation directory enclosed in the (`.zip`) file with all ORFs scanned `final.ORFs.annot3` 
+  - 1.annotation directory with all ORFs scanned and annotated `final.ORFs` 
   - 2.annotated start site `start_codon.bed` 
   - 3.genome size `genome` 
-  - 4.exon annotation gtf `exons.gtf`
+  - 4.exon annotation gtf `exons.gtf` 
 
-- out_dir 	: the directory of the output result, eg: `HCT116_test`
+- out_dir 	: the directory of the output result, eg: `GSE52968`
 
-- output_header 	: the header of all the output file, eg: `HCT116` 
+- output_header 	: the header of all the output file, eg: `SRR1042853` 
 
-- scripts_dir 	: the directory of all the scripts in the package( enclosed in the `.zip` file)
+- scripts_dir 	: the directory of all the scripts in the package
 
 
-### Determine P-site and create P-site track on transcript level 
+### Determine P-site 
+
+This step determine the P-site position for each read length by overlapping with the annotated start codon 
 
 ```
-Usage: ./create_track_Ribo.sh <Ribo_bam> <annotation_dir> <out_dir> <output_header> <scripts_dir>
+Usage: ./P-site_determination.sh <Ribo_bam> <start_codon.bed> <out_dir> <output_identifier> <scripts_dir>
+example: scripts/P-site_determination.sh   GSE52968/SRR1042853.sort.bam       annotation_yeast/start_codon.bed      GSE52968        SRR1042853         scripts;
 ```
-
-This step determine the P-site position for each read length by overlapping with the annotated start codon and generate P-site track for each transcript.
-
 
 #### Output files:
 **`P-site`** directory, including :
 
-* _header_.psite1nt.txt 	: the P-sites position for each length
+* _identifier_.psite1nt.txt 	: the P-sites position for each length
 
-* _header_.psite.pdf 	: the pdf displaying the histogram of aggregated reads
+* _identifier_.psite.pdf 	: the pdf displaying the histogram of aggregated reads
 
-* final.psite 	: the created P-sites track of each transcripts 
+
+### generating P-site track 
+
+This step creats the P-site track for transcripts of interests
+
+```
+Usage: ./create_track_Ribo.sh <Ribo_bam> <transcripts.exon.gtf> <genome> <out_dir> <output_identifier> <scripts_dir>
+example: scripts/create_track_Ribo.sh      GSE52968/SRR1042853.sort.bam              annotation_yeast/exons.gtf       annotation_yeast/genome      GSE52968     SRR1042853         scripts;
+```
+
+#### Output files:
+
+**`bedgraph`** directory, including :
+
+* final.psite 	: P-site track for each interested transcript
 
 
 ### Predict ORF translation
 
-```
-Usage: ./main_function.bash <annotation_dir> <out_dir> <output_header> <scripts_dir>
-```
+This step predicts the translated ORF
 
-This step takes the information from the P-site track for each transcript and predict the translation status for each ORF.
+```
+Usage: ./create_track_Ribo.sh <transcript exon gtf> <genome> <out_dir> <output_header> <scripts_dir> <cores>
+example: scripts/main_function.sh          annotation_yeast/final.ORFs     GSE52968         SRR1042853         scripts     8;
+```
 
 #### Output files:
-**`out`** directory, including :
 
-* _header_.TR.psites.* 	: the features of ORFs including chi-square P-value information
+* _identifier_.feats1 	: the features of ORFs including chi-square P-value information
 
-* _header_.TR.psites.*.cv	: reads coverage of ORFs
+* _identifier_.COV	: reads coverage of ORFs
 
 
 ### Identify translated ORF
 
+This step incorporates all the information from each ORF and find ORFs that are predicted to be translated ( P-value < 0.05) 
+
 ```
 Usage: ./translated_protein_annotation.sh <annotation_dir> <out_dir> <output_header> <scripts_dir>
+example: scripts/translated_protein_annotation.sh  annotation_yeast       GSE52968       SRR1042853    scripts;
 ```
-
-This step incorporates all the information from each ORF and find ORFs that are predicted to be translated ( P-value < 0.05) 
 
 #### Output files:
 
-* _header_.mx 			: the combined information of all ORFs including chi-square P-value information and coverage information
+* _identifier_.mx 			: the combined information of all ORFs including chi-square P-value information and coverage information
 
 **`result`** directory, including :
 
-* _header_.95%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.05
+* _identifier_.95%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.05
 
-* _header_.95%.ORF_category : annotate ORFs in $header.95%.mx by the relative position of the annotated ORF and customize the output
+* _identifier_.95%.ORF_category : annotate ORFs in $header.95%.mx by the relative position of the annotated ORF and customize the output
 
