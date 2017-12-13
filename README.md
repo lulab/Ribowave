@@ -2,6 +2,7 @@
 
 RiboWave is a funtional Ribo-seq analysis tool to identify translated ORF based on Ribo-seq data.
 
+
 The RiboWave workflow consists of:
 
 * Create the annotation file for the subsequent analysis. [`create_annotation.sh`]
@@ -36,7 +37,7 @@ It is **recommanded** to make a new directory and move the Ribo-seq bam file int
 
 - scripts_dir 	: the directory of all the scripts in the package
 
-### 0.create annotation
+### 0. Create annotation
 
 This step scans for and annotates all putative ORFs 
 
@@ -71,7 +72,7 @@ Example: scripts/create_annotation.sh   annotation_yeast     annotation_yeast/Sa
 - scripts_dir 	: the directory of all the scripts in the package
 
 
-### 1.Determine P-site 
+### 1. Determine P-site 
 
 This step determine the P-site position for each read length by overlapping with the annotated start codon 
 
@@ -89,14 +90,16 @@ Example: scripts/P-site_determination.sh   GSE52968/SRR1042853.sort.bam       an
 * _identifier_.psite.pdf 	: the pdf displaying the histogram of aggregated reads
 
 
-### 2.Generating P-site track 
+### 2. Generating P-site track 
 
 This step creats the P-site track for transcripts of interests
 
 ```
 Usage: ./create_track_Ribo.sh <Ribo_bam> <transcripts.exon.gtf> <genome> <out_dir> <output_identifier> <scripts_dir>
 
-Example: scripts/create_track_Ribo.sh      GSE52968/SRR1042853.sort.bam              annotation_yeast/exons.gtf       annotation_yeast/genome      GSE52968     SRR1042853         scripts;
+Example1: scripts/create_track_Ribo.sh      GSE52968/SRR1042853.sort.bam              annotation_yeast/exons.gtf       annotation_yeast/genome      GSE52968     SRR1042853         scripts;
+
+Example1: scripts/create_track_Ribo.sh      GSE52968/SRR1042853.sort.bam              annotation_yeast/chrXII.exons.gtf       annotation_yeast/genome      GSE52968     SRR1042853         scripts;
 ```
 
 #### Output files:
@@ -106,7 +109,7 @@ Example: scripts/create_track_Ribo.sh      GSE52968/SRR1042853.sort.bam         
 * final.psite 	: P-site track for each interested transcript
 
 
-### 3.RiboWave main function
+### 3. RiboWave main function
 
 This step predicts the translated ORF
 
@@ -123,7 +126,7 @@ Example: scripts/main_function.sh          annotation_yeast/final.ORFs     GSE52
 * _identifier_.COV	: reads coverage of ORFs
 
 
-### 4.Identify translated ORF
+### 4. Identify translated ORF
 
 This step incorporates all the information from each ORF and find ORFs that are predicted to be translated ( P-value < 0.05) 
 
