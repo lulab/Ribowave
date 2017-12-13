@@ -44,7 +44,7 @@ This step scans for and annotates all putative ORFs
 ```
 Usage: ./create_annotation.sh <annotation_dir>  <genome.gtf>  <fasta> <scripts_dir>
 
-  Example: scripts/create_annotation.sh annotation_yeast  annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.90.gtf  annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa scripts;
+Example: scripts/create_annotation.sh annotation_yeast  annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.90.gtf  annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa scripts;
 ```
 
 #### Output files:
