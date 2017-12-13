@@ -30,7 +30,7 @@ The RiboWave workflow consists of:
 ## Before running 
 It is **recommanded** to make a new directory and move the Ribo-seq bam file into that directory;
 
-#### Arguments:
+#### Input files:
 - annotation_dir  : 
   - 1.annotation.gtf : the annotation gtf should contain ***start_codon*** and ***stop_codon*** information  `Saccharomyces_cerevisiae.R64-1-1.90.gtf` 
   - 2.genome.fasta `Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa` 
@@ -56,7 +56,7 @@ Example: scripts/create_annotation.sh   annotation_yeast     annotation_yeast/Sa
 
 ## Workflow
 
-#### Arguments:
+#### Input files:
 - Ribo_bam 	: **secondary alignment removed** and sorted
 
 - annotation_dir  : 
