@@ -21,18 +21,12 @@ The RiboWave workflow consists of:
 * bedtools v2.25.0 
 ### R packages
 * reshape
-
 * ggplot2
-
 * rhdf5
-
 * methods
-
 * wmtsa
 
 ## Before running 
-
-It is **necessary** to eliminate alignments that flagged as secondary alignments to ensure one genomic position for one single read;
 
 It is **recommanded** to make a new directory and move the Ribo-seq bam file into that directory;
 
@@ -41,7 +35,7 @@ It is **recommanded** to make a new directory and move the Ribo-seq bam file int
 
 #### Arguments:
 
-- Ribo_bam 	: secondary alignment removed and sorted
+- Ribo_bam 	: **secondary alignment removed** and sorted
 
 - annotation_dir  : 
   - 1.annotation directory with all ORFs scanned and annotated `final.ORFs` 
