@@ -62,7 +62,16 @@ Example: scripts/create_annotation.sh   annotation_yeast     annotation_yeast/Sa
 - annotation_dir  : 
   - 1.annotation directory with all ORFs scanned and annotated `final.ORFs` 
   - 2.annotated start site `start_codon.bed` 
-  - 3.genome size `genome` 
+  - 3.genome size `genome`
+    The `genome` may look like this:
+    
+    ```
+    I 230218
+    II  813184
+    III	316620
+    IV	1531933
+    ```
+    
   - 4.exon annotation gtf `exons.gtf` 
 
 - out_dir 	: the directory of the output result, eg: `GSE52968`
@@ -85,8 +94,17 @@ Example: scripts/P-site_determination.sh   GSE52968/SRR1042853.sort.bam       an
 #### Output files:
 **`P-site`** directory, including :
 
-* _identifier_.psite1nt.txt 	: the P-sites position for each length
-
+* _identifier_.psite1nt.txt 	: the P-sites position (= offset + 1) for each length 
+  
+  ```
+  25	10
+  26	11
+  27	12
+  28	13
+  29	11
+  30	12
+  ```
+  
 * _identifier_.psite.pdf 	: the pdf displaying the histogram of aggregated reads
 
 
@@ -106,8 +124,13 @@ Example1: scripts/create_track_Ribo.sh      GSE52968/SRR1042853.sort.bam        
 
 **`bedgraph`** directory, including :
 
-* final.psite 	: P-site track for each interested transcript
-
+* final.psite 	: P-site track for each interested transcript 
+  
+  ```
+  YAL044C 3,0,0,3,10,0,0,0,0,2,0,0,36,0,0,4,0,0,0,6,0,12,0,7,32,0,0,6,7,9,19,2,5,28,0,0,0,0,0,0,0,0,0,0,4,0,0,0,24,0,1,34,0,1,9,2,0,8,0,0,0,0,0,38,0,4,33,0,10,24,0,8,2,0,6,16,0,0,2,0,0,4,0,0,0,2,0,
+  YAL045C 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+  YAL046C 3,0,0,2,0,0,4,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,1,0,0,16,0,0,6,0,0,0,0,0,12,0,0,19,0,0,0,0,0,5,0,1,5,0,0,0,0,1,6,0,0,0,0,0,14,0,0,2,0,0,7,0
+  ```
 
 ### 3. RiboWave main function
 
@@ -139,6 +162,8 @@ Example: scripts/translated_protein_annotation.sh  annotation_yeast       GSE529
 #### Output files:
 
 * _identifier_.mx 			: the combined information of all ORFs including chi-square P-value information and coverage information
+  ```
+  
 
 **`result`** directory, including :
 
