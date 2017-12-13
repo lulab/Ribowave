@@ -178,12 +178,13 @@ Example: scripts/translated_protein_annotation.sh  annotation_yeast       GSE529
 * _identifier_.95%.ORF_category : annotate ORFs in $header.95%.mx by the relative position of the annotated ORF and customize the output. It may look like this:
 
   ```
-  FBtr0070007_2_93_1028	NC	anno	ATG	FBtr0070007_2_93_1028	anno
-  FBtr0070052_2_255_905	NC	sharestop	ATG	FBtr0070052_2_57_905	truncated
-  FBtr0071362_2_330_1952	NC	sharestop	ATG	FBtr0071362_2_609_1952	extended
-  FBtr0070151_0_247_294	NC	unanno	ATG	FBtr0070151_1_668_4567	uORF
-  FBtr0070379_2_3693_3761	NC	unanno	ATG	FBtr0070379_0_859_3693	internal_overlapped
-  FBtr0347011_0_667_2583	NC	unanno	ATG	NA	unanno
+  ORF_ID  gene_annotation ORF_annotation
+  FBtr0070007_2_93_1028	NC	anno
+  FBtr0070052_2_255_905	NC	truncated
+  FBtr0071362_2_330_1952	NC	extended
+  FBtr0070151_0_247_294	NC	uORF
+  FBtr0070379_2_3693_3761	NC	internal_overlapped
+  FBtr0347011_0_667_2583	NC	unanno
   ```
   
 
