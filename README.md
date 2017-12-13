@@ -67,9 +67,9 @@ Example: scripts/create_annotation.sh   annotation_yeast     annotation_yeast/Sa
     
     ```
     I 230218
-    II  813184
-    III	316620
-    IV	1531933
+    II 813184
+    III 316620
+    IV 1531933
     ```
     
   - 4.exon annotation gtf `exons.gtf` 
