@@ -42,9 +42,9 @@ It is **recommanded** to make a new directory and move the Ribo-seq bam file int
 This step scans for and annotates all putative ORFs 
 
 ```
-Usage: ./create_annotation.sh <annotation_dir> <genome.gtf> <fasta> <scripts_dir>
+Usage: ./create_annotation.sh <annotation_dir>  <genome.gtf>  <fasta> <scripts_dir>
 
-Example: scripts/create_annotation.sh   annotation_yeast     annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.90.gtf    annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa   scripts;
+  Example: scripts/create_annotation.sh annotation_yeast  annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.90.gtf  annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa scripts;
 ```
 
 #### Output files:
@@ -85,9 +85,9 @@ Example: scripts/create_annotation.sh   annotation_yeast     annotation_yeast/Sa
 This step determine the P-site position for each read length by overlapping with the annotated start codon 
 
 ```
-Usage: ./P-site_determination.sh <Ribo_bam> <start_codon.bed> <out_dir> <output_identifier> <scripts_dir>
+Usage: ./P-site_determination.sh  <Ribo_bam>  <start_codon.bed> <out_dir> <output_identifier> <scripts_dir>
 
-Example: scripts/P-site_determination.sh   GSE52968/SRR1042853.sort.bam       annotation_yeast/start_codon.bed      GSE52968        SRR1042853         scripts;
+Example: scripts/P-site_determination.sh  GSE52968/SRR1042853.sort.bam  annotation_yeast/start_codon.bed  GSE52968  SRR1042853  scripts;
 ```
 
 #### Output files:
@@ -112,11 +112,11 @@ Example: scripts/P-site_determination.sh   GSE52968/SRR1042853.sort.bam       an
 This step creats the P-site track for transcripts of interests
 
 ```
-Usage: ./create_track_Ribo.sh <Ribo_bam> <transcripts.exon.gtf> <genome> <out_dir> <output_identifier> <scripts_dir>
+Usage: ./create_track_Ribo.sh <Ribo_bam>  <transcripts.exon.gtf>  <genome>  <out_dir> <output_identifier> <scripts_dir>
 
-Example1: scripts/create_track_Ribo.sh      GSE52968/SRR1042853.sort.bam  annotation_yeast/exons.gtf  annotation_yeast/genome GSE52968  SRR1042853  scripts;
+Example1: scripts/create_track_Ribo.sh  GSE52968/SRR1042853.sort.bam  annotation_yeast/exons.gtf  annotation_yeast/genome GSE52968  SRR1042853  scripts;
 
-Example2: scripts/create_track_Ribo.sh      GSE52799/SRR1039770.sort.bam  annotation_fly/chrX.exons.gtf annotation_fly/genome GSE52799  SRR1039770  scripts;
+Example2: scripts/create_track_Ribo.sh  GSE52799/SRR1039770.sort.bam  annotation_fly/chrX.exons.gtf annotation_fly/genome GSE52799  SRR1039770  scripts;
 ```
 
 #### Output files:
@@ -136,9 +136,9 @@ Example2: scripts/create_track_Ribo.sh      GSE52799/SRR1039770.sort.bam  annota
 This step predicts the translated ORF
 
 ```
-Usage: ./create_track_Ribo.sh <transcript exon gtf> <genome> <out_dir> <output_header> <scripts_dir> <cores>
+Usage: ./create_track_Ribo.sh <transcript exon gtf> <genome>  <out_dir> <output_header> <scripts_dir> <cores>
 
-Example: scripts/main_function.sh          annotation_yeast/final.ORFs     GSE52968         SRR1042853         scripts     8;
+Example: scripts/main_function.sh annotation_yeast/final.ORFs GSE52968  SRR1042853  scripts 8;
 ```
 
 #### Output files:
@@ -153,9 +153,9 @@ Example: scripts/main_function.sh          annotation_yeast/final.ORFs     GSE52
 This step incorporates all the information from each ORF and find ORFs that are predicted to be translated ( P-value < 0.05) 
 
 ```
-Usage: ./translated_protein_annotation.sh <annotation_dir> <out_dir> <output_header> <scripts_dir>
+Usage: ./translated_protein_annotation.sh <annotation_dir>  <out_dir> <output_header> <scripts_dir>
 
-Example: scripts/translated_protein_annotation.sh  annotation_yeast       GSE52968       SRR1042853    scripts;
+Example: scripts/translated_protein_annotation.sh annotation_yeast  GSE52968  SRR1042853  scripts;
 ```
 
 #### Output files:
