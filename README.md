@@ -52,7 +52,7 @@ example: scripts/create_annotation.sh   annotation_yeast     annotation_yeast/Sa
 
 * final.ORFs 	: all ORFs 
 
-## workflow
+## Workflow
 
 #### Arguments:
 - Ribo_bam 	: **secondary alignment removed** and sorted
@@ -76,7 +76,8 @@ This step determine the P-site position for each read length by overlapping with
 
 ```
 Usage: ./P-site_determination.sh <Ribo_bam> <start_codon.bed> <out_dir> <output_identifier> <scripts_dir>
-example: scripts/P-site_determination.sh   GSE52968/SRR1042853.sort.bam       annotation_yeast/start_codon.bed      GSE52968        SRR1042853         scripts;
+```
+Example: ```scripts/P-site_determination.sh   GSE52968/SRR1042853.sort.bam       annotation_yeast/start_codon.bed      GSE52968        SRR1042853         scripts;
 ```
 
 #### Output files:
