@@ -114,9 +114,9 @@ This step creats the P-site track for transcripts of interests
 ```
 Usage: ./create_track_Ribo.sh <Ribo_bam> <transcripts.exon.gtf> <genome> <out_dir> <output_identifier> <scripts_dir>
 
-Example1: scripts/create_track_Ribo.sh      GSE52968/SRR1042853.sort.bam              annotation_yeast/exons.gtf       annotation_yeast/genome      GSE52968     SRR1042853         scripts;
+Example1: scripts/create_track_Ribo.sh      GSE52968/SRR1042853.sort.bam  annotation_yeast/exons.gtf  annotation_yeast/genome GSE52968  SRR1042853  scripts;
 
-Example2: scripts/create_track_Ribo.sh      GSE52799/SRR1039770.sort.bam       annotation_fly/chrX.exons.gtf       annotation_fly/genome  GSE52799     SRR1039770         scripts;
+Example2: scripts/create_track_Ribo.sh      GSE52799/SRR1039770.sort.bam  annotation_fly/chrX.exons.gtf annotation_fly/genome GSE52799  SRR1039770  scripts;
 ```
 
 #### Output files:
