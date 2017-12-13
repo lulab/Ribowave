@@ -17,8 +17,8 @@ The RiboWave workflow consists of:
 ## Requirements
 ### software
 * R 
-
 * bedtools v2.25.0 
+
 ### R packages
 * reshape
 * ggplot2
@@ -27,14 +27,34 @@ The RiboWave workflow consists of:
 * wmtsa
 
 ## Before running 
-
 It is **recommanded** to make a new directory and move the Ribo-seq bam file into that directory;
 
+#### Arguments:
+- annotation_dir  : 
+  - 1.annotation.gtf : the annotation gtf should contain ***start_codon*** and ***stop_codon*** information  `Saccharomyces_cerevisiae.R64-1-1.90.gtf` 
+  - 2.genome.fasta `Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa` 
+
+- scripts_dir 	: the directory of all the scripts in the package
+
+### create annotation
+
+This step scans for and annotates all putative ORFs 
+
+```
+Usage: ./create_annotation.sh <annotation_dir> <genome.gtf> <fasta> <scripts_dir>
+example: scripts/create_annotation.sh   annotation_yeast     annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.90.gtf    annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa   scripts;
+```
+
+#### Output files:
+**`annotation`** directory, including :
+
+* start_codon.bed 	: annotated start codon 
+
+* final.ORFs 	: all ORFs 
 
 ## workflow
 
 #### Arguments:
-
 - Ribo_bam 	: **secondary alignment removed** and sorted
 
 - annotation_dir  : 
