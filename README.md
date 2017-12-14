@@ -175,7 +175,7 @@ Example: scripts/translated_protein_annotation.sh annotation_yeast  GSE52968  SR
 
 * _identifier_.95%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.05
 
-* _identifier_.95%.ORF_category : annotate ORFs in $header.95%.mx by the relative position of the annotated ORF and customize the output. It may look like this:
+* _identifier_.95%.ORF_category : annotate ORFs in _identifier_.95%.mx by the relative position of the annotated ORF and customize the output. It may look like this:
 
   ```
   ORF_ID  gene_annotation ORF_annotation
