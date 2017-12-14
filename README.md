@@ -32,8 +32,8 @@ It is **recommanded** to make a new directory and move the `Ribo-seq bam file` i
 
 #### Input files:
 - annotation_dir  : 
-  - 1.annotation.gtf : the annotation gtf should contain ***start_codon*** and ***stop_codon*** information  `Saccharomyces_cerevisiae.R64-1-1.90.gtf` 
-  - 2.genome.fasta `Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa` 
+  - 1.annotation.gtf : the annotation gtf should contain **start_codon** and **stop_codon** information,eg: `Saccharomyces_cerevisiae.R64-1-1.90.gtf` 
+  - 2.genome.fasta: eg: `Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa` 
 
 - scripts_dir 	: the directory of all the scripts in the package
 
