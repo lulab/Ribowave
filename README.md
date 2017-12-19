@@ -207,16 +207,15 @@ scripts/main_function.sh     CRF 	 -a GSE52968/bedgraph/SRR1042853/final.psite -
 * _name_.feats1 	: the features of ORFs including chi-square P-value information.
 
 Detail information of _name_.feats:
+	
+# Column | # Explanation	
+------------ | -------------
+column1-column7 | basic information about the ORF
+column8		| reads coverage within the ORF
+column9		| P-value predicted by RiboWave
+column10	| translational signal outside of the current ORF
+column11	| reads intensity at start codon
 
-	column1-column7 : basic information about the ORF
-	
-	column8		: reads coverage within the ORF
-	
-	column9		: P-value predicted by RiboWave
-	
-	column10	: translational signal outside of the current ORF
-	
-	column11	: reads intensity at start codon
 
 **`result`** directory, including :
 
@@ -232,11 +231,12 @@ YBR197C_0_292_651
 
 Detail information of _name_.COV:
 
-	column1-column6 : basic information about the ORF
-	
-	column7		: P-site density within the ORF
-	
-	column8		: denoised PF P-site density within the ORF
+# Column | # Explanation	
+------------ | -------------
+column1-column6 | basic information about the ORF
+column7		| P-site density within the ORF
+column8		| denoised PF P-site density within the ORF
+
 
 * _name_.CRF  : ORFs that might experience reading frame translocation. 
 
