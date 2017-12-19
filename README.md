@@ -57,7 +57,7 @@ Example: scripts/create_annotation.sh annotation_yeast  annotation_yeast/Sacchar
 
 * start_codon.bed 	: annotated start codon 
 
-* final.ORFs 	: all ORFs. eg:`YAL001C_0_1_3480` where YAL001C refers to the transcript, 0 refers to the reading frame, 1 refers to the start site, 3480 refers to the stop codon.  
+* final.ORFs 	: all ORFs, eg: `YAL001C_0_1_3480` where YAL001C refers to the transcript, 0 refers to the reading frame, 1 refers to the start site, 3480 refers to the stop codon.  
 
 ### 1. P-site determination
 
@@ -208,11 +208,11 @@ scripts/main_function.sh     CRF 	 -a GSE52968/bedgraph/SRR1042853/final.psite -
 
 Column | Explanation	
 ------------ | -------------
-column1-column7 | basic information about the ORF
-column8		| reads coverage within the ORF
-column9		| P-value predicted by RiboWave
-column10	| translational signal outside current ORF
-column11	| reads intensity at start codon
+Column1-Column7 | Basic information about the ORF
+Column8		| Reads coverage within the ORF
+Column9		| P-value predicted by RiboWave
+Column10	| Translational signal outside current ORF
+Column11	| Reads intensity at start codon
 
 **`result`** directory, including :
 
@@ -228,23 +228,23 @@ YBR197C_0_292_651
 
 Column | Explanation	
 ------------ | -------------
-column1-column6 | basic information about the ORF
-column7		| P-site density within the ORF
-column8		| denoised PF P-site density within the ORF
+Column1-Column6 | Basic information about the ORF
+Column7		| P-site density within the ORF
+Column8		| Denoised PF P-site density within the ORF
 
 
 * _name_.CRF  : ORFs that might experience reading frame translocation. It may look like this :
 
 Column | Explanation	
 ------------ | -------------
-column1 | ORF
-column2		| the start of gap region 
-column3		| the stop of gap region
-column4		| reading frames after the shift ,eg: `0_7,2_2` where `0_7` refers to continuous seven PF P-sites of frame 0 followed by continuous two PF P-sites of frame 2.
-column5		| the corresponding PF P-sites position after the shift ,eg : `1996,2152,2197,2437,2569,2596,2605;2712,2907` where `1996,2152,2197,2437,2569,2596,2605` corresponds to the exact position of `0_7` within the transcript. Discontinuity in the reading frame is separated by `;`.
-column6		| F1 score describing the extent of change in the reading frame before and after the gap
-column7 	| F2 score describing the extent of reading frame consistency before and after the gap
-column8		| Fscore describing the potential of frameshift 
+Column1 | ORF
+Column2		| Start of gap region 
+Column3		| Stop of gap region
+Column4		| Reading frames after the shift ,eg: `0_7,2_2` where `0_7` refers to continuous seven PF P-sites of frame 0 followed by continuous two PF P-sites of frame 2.
+Column5		| Corresponding PF P-sites position after the shift ,eg : `1996,2152,2197,2437,2569,2596,2605;2712,2907` where `1996,2152,2197,2437,2569,2596,2605` corresponds to the exact position of `0_7` within the transcript. Discontinuity in the reading frame is separated by `;`
+Column6		| F1 score describing the extent of change in the reading frame before and after the gap
+Column7 	| F2 score describing the extent of reading frame consistency before and after the gap
+Column8		| Fscore describing the potential of frameshift 
 
 
 
