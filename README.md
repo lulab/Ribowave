@@ -57,7 +57,7 @@ Example: scripts/create_annotation.sh annotation_yeast  annotation_yeast/Sacchar
 
 * start_codon.bed 	: annotated start codon 
 
-* final.ORFs 	: all ORFs 
+* final.ORFs 	: all ORFs. eg:`YAL001C_0_1_3480` where YAL001C refers to the transcript, 0 refers to the reading frame, 1 refers to the start site, 3480 refers to the stop codon.  
 
 ### 1. P-site determination
 
@@ -117,7 +117,7 @@ Example2: scripts/create_track_Ribo.sh  GSE52799/SRR1039770.sort.bam  annotation
 
 - <exons.gtf> :  a gtf file for only the exons from transcripts of intersect, eg: `chrX.exons.gtf`, `exons.gtf`
 
-- <genome> :  the file including all the chromosomes and its length, `genome` may look like this:
+- <genome\> :  the file including all the chromosomes and its length, `genome` may look like this:
     
     ```
     I 230218
@@ -198,13 +198,19 @@ scripts/main_function.sh     CRF 	 -a GSE52968/bedgraph/SRR1042853/final.psite -
 
 #### Input files:
 
-- <P-site track> : output from the previous step, containing the P-site track of transcripts of interest
+- <P-site track\> : output from the previous step, containing the P-site track of transcripts of interest
 
 - <ORF_list> : ORFs of interest ,eg : `final.ORFs`
 
 #### Output files:
 
-* _name_.feats1 	: the features of ORFs including chi-square P-value information
+* _name_.feats1 	: the features of ORFs including chi-square P-value information.
+Detail information of _name_.feats:
+	column1-column7 : basic information about the ORF
+	column8		: reads coverage within the ORF
+	column9		: P-value predicted by RiboWave
+	column10	: translational signal outside of the current ORF
+	column11	: reads intensity at start codon
 
 **`result`** directory, including :
 
@@ -217,6 +223,11 @@ YBR197C_0_292_651
 ```
 
 * _name_.COV	: reads density (P-site/PF P-site) of given ORFs
+
+Detail information of _name_.COV:
+	column1-column6 : basic information about the ORF
+	column7		: P-site density within the ORF
+	column8		: denoised PF P-site density within the ORF
 
 * _name_.CRF  : ORFs that might experience reading frame translocation. 
 
