@@ -211,7 +211,7 @@ Column | Explanation
 column1-column7 | basic information about the ORF
 column8		| reads coverage within the ORF
 column9		| P-value predicted by RiboWave
-column10	| translational signal outside of the current ORF
+column10	| translational signal outside current ORF
 column11	| reads intensity at start codon
 
 **`result`** directory, including :
