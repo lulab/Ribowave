@@ -73,7 +73,7 @@ Example: scripts/P-site_determination.sh  GSE52968/SRR1042853.sort.bam  annotati
 - <Ribo_bam> :  **secondary alignment removed** and sorted
 
 - annotation_dir  : 
-  - 1. <start_codon.bed> : annotated start site `start_codon.bed` 
+  - <start_codon.bed> : annotated start site `start_codon.bed` 
 
 - out_dir 	: the directory of the output result, eg: `GSE52968`
 
@@ -88,7 +88,6 @@ Example: scripts/P-site_determination.sh  GSE52968/SRR1042853.sort.bam  annotati
 * _name_.psite1nt.txt 	: the P-sites position (= offset + 1) for each length. It may look this this : 
   
   ```
-  read_length P-site position
   25	10
   26	11
   27	12
@@ -118,7 +117,7 @@ Example2: scripts/create_track_Ribo.sh  GSE52799/SRR1039770.sort.bam  annotation
 
 - <exons.gtf> :  a gtf file for only the exons from transcripts of intersect, eg: `chrX.exons.gtf`, `exons.gtf`
 
-- <genome size> :  the file including all the chromosomes and its length, `genome` may look like this:
+- <genome> :  the file including all the chromosomes and its length, `genome` may look like this:
     
     ```
     I 230218
