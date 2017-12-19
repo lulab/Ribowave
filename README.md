@@ -208,7 +208,7 @@ scripts/main_function.sh     CRF 	 -a GSE52968/bedgraph/SRR1042853/final.psite -
 
 Detail information of _name_.feats:
 	
-# Column | # Explanation	
+Column | Explanation	
 ------------ | -------------
 column1-column7 | basic information about the ORF
 column8		| reads coverage within the ORF
@@ -231,7 +231,7 @@ YBR197C_0_292_651
 
 Detail information of _name_.COV:
 
-# Column | # Explanation	
+Column | Explanation	
 ------------ | -------------
 column1-column6 | basic information about the ORF
 column7		| P-site density within the ORF
