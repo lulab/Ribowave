@@ -171,7 +171,7 @@ Functions are provided including : predicting translated ORF, estimating reads d
 ----------------------------------------------------------------------------------------------------
 
 Usage:
-	 main_function.sh [-h] <job> -a P-site track -b ORF_list -o output_dir [-n output_name] -s scripts_dir [-p core]
+	 main_function.sh [-h] <job> -a P-site track -b ORF_list -o output_dir -s scripts_dir [-n output_name] [-p core]
 
 Options:
 	<job>	<string>  	(pvalue : provide the pvalue for each given ORF;		density : provide reads density for each given ORF;	CRF : provide frameshift potential for each given ORF)
@@ -191,16 +191,16 @@ It might take hours to perform the analysis if the input is large. It is **recom
 Run `main_function.sh` on example:
 
 ```
-scripts/main_function.sh     pvalue -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
-scripts/main_function.sh     density -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
-scripts/main_function.sh     CRF -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/main_function.sh     pvalue	 -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/main_function.sh     density	 -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/main_function.sh     CRF 	 -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
 ```
 
 #### Input files:
 
 - <P-site track> : output from the previous step, containing the P-site track of transcripts of interest
- 
- - <ORF_list> : ORFs of interest ,eg : `final.ORFs`
+
+- <ORF_list> : ORFs of interest ,eg : `final.ORFs`
 
 #### Output files:
 
