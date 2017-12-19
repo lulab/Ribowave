@@ -235,6 +235,17 @@ column8		| denoised PF P-site density within the ORF
 
 * _name_.CRF  : ORFs that might experience reading frame translocation. It may look like this :
 
+Column | Explanation	
+------------ | -------------
+column1 | ORF
+column2		| the start of gap region 
+column3		| the stop of gap region
+column4		| reading frames after the shift ,eg: `0_7,2_2` where `0_7` refers to continuous seven PF P-sites of frame 0 followed by continuous two PF P-sites of frame 2.
+column5		| the corresponding PF P-sites position after the shift ,eg : `1996,2152,2197,2437,2569,2596,2605;2712,2907` where `1996,2152,2197,2437,2569,2596,2605` corresponds to the exact position of `0_7` within the transcript. Discontinuity in the reading frame is separated by `;`.
+column6		| F1 score describing the extent of change in the reading frame before and after the gap
+column7 	| F2 score describing the extent of reading frame consistency before and after the gap
+column8		| Fscore describing the potential of frameshift 
+
 
 
   
