@@ -5,15 +5,17 @@ RiboWave is a funtional Ribo-seq analysis tool to identify translated ORF based 
 
 The RiboWave workflow consists of:
 
-* Create the annotation file for the subsequent analysis. [`create_annotation.sh`]
 
-* Determine the P-site position of Ribo-seq. [`P-site_determination.sh`]
+- Pre-processing :
+  - Create the annotation file for the subsequent analysis. [`create_annotation.sh`]
+  - Determine the P-site position of Ribo-seq. [`P-site_determination.sh`]
+  - Generate P-site tracks from Ribo-seq, dependent on P-sites calculation cutoffs.[`create_track_Ribo.sh`]
 
-* Generate P-site tracks from Ribo-seq, dependent on P-sites calculation cutoffs.[`create_track_Ribo.sh`]
+- Main function :
+  - Predict translated ORFs [`main_function.sh  pvalue`]
+  - Estimate reads density for each given ORF [`main_function.sh  density`]
+  - Estimate frameshift potential for each given ORF [`main_function.sh  CRF`]
 
-* Predicting translating ORFs [`main_function.sh`]
-
-* Predict translated ORF and annotating translatome [`translated_protein_annotation.sh`]
 
 ## Requirements
 ### software
@@ -26,26 +28,29 @@ The RiboWave workflow consists of:
 * rhdf5
 * methods
 * wmtsa
+* parallel
 
 ## Before running 
 It is **recommanded** to make a new directory and move the `Ribo-seq bam file` into that directory;
 
-#### Input files:
-- annotation_dir  : 
-  - 1.annotation.gtf : the annotation gtf should contain **start_codon** and **stop_codon** information,eg: `Saccharomyces_cerevisiae.R64-1-1.90.gtf` 
-  - 2.genome.fasta: eg: `Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa` 
-
-- scripts_dir 	: the directory of all the scripts in the package
+## Pre-processing
 
 ### 0. Create annotation
 
 This step scans for and annotates all putative ORFs 
 
 ```
-Usage: ./create_annotation.sh <annotation_dir>  <genome.gtf>  <fasta> <scripts_dir>
+Usage: ./create_annotation.sh <genome.gtf> <fasta> <annotation_dir> <scripts_dir>
 
 Example: scripts/create_annotation.sh annotation_yeast  annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.90.gtf  annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa scripts;
 ```
+
+#### Input files:
+- <annotation.gtf> : the annotation gtf should contain **start_codon** and **stop_codon** information,eg: `Saccharomyces_cerevisiae.R64-1-1.90.gtf` 
+- <genome.fasta> : eg: `Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa` 
+
+- <annotation_dir> :  the directory for all the annotation output
+- <scripts_dir> 	: the directory of all the scripts in the package
 
 #### Output files:
 **`annotation`** directory, including :
@@ -54,33 +59,7 @@ Example: scripts/create_annotation.sh annotation_yeast  annotation_yeast/Sacchar
 
 * final.ORFs 	: all ORFs 
 
-## Workflow
-
-#### Input files:
-- Ribo_bam 	: **secondary alignment removed** and sorted
-
-- annotation_dir  : 
-  - 1.annotation directory with all ORFs scanned and annotated `final.ORFs` 
-  - 2.annotated start site `start_codon.bed` 
-  - 3.genome size `genome` looks like this:
-    
-    ```
-    I 230218
-    II  813184
-    III 316620
-    IV  1531933
-    ```
-    
-  - 4.exon annotation gtf `exons.gtf` 
-
-- out_dir 	: the directory of the output result, eg: `GSE52968`
-
-- output_header 	: the header of all the output file, eg: `SRR1042853` 
-
-- scripts_dir 	: the directory of all the scripts in the package
-
-
-### 1. Determine P-site 
+### 1. P-site determination
 
 This step determine the P-site position for each read length by overlapping with the annotated start codon 
 
@@ -90,12 +69,26 @@ Usage: ./P-site_determination.sh  <Ribo_bam>  <start_codon.bed> <out_dir> <outpu
 Example: scripts/P-site_determination.sh  GSE52968/SRR1042853.sort.bam  annotation_yeast/start_codon.bed  GSE52968  SRR1042853  scripts;
 ```
 
+#### Input files:
+- <Ribo_bam> :  **secondary alignment removed** and sorted
+
+- annotation_dir  : 
+  - 1. <start_codon.bed> : annotated start site `start_codon.bed` 
+
+- out_dir 	: the directory of the output result, eg: `GSE52968`
+
+- output_name 	: the name of all the output file, default: test. eg: `SRR1042853` 
+
+- scripts_dir 	: the directory of all the scripts in the package
+
+
 #### Output files:
 **`P-site`** directory, including :
 
-* _identifier_.psite1nt.txt 	: the P-sites position (= offset + 1) for each length. It may look this this : 
+* _name_.psite1nt.txt 	: the P-sites position (= offset + 1) for each length. It may look this this : 
   
   ```
+  read_length P-site position
   25	10
   26	11
   27	12
@@ -104,7 +97,7 @@ Example: scripts/P-site_determination.sh  GSE52968/SRR1042853.sort.bam  annotati
   30	12
   ```
   
-* _identifier_.psite.pdf 	: the pdf displaying the histogram of aggregated reads
+* _name_.psite.pdf 	: the pdf displaying the histogram of aggregated reads
 
 
 ### 2. Generating P-site track 
@@ -112,12 +105,33 @@ Example: scripts/P-site_determination.sh  GSE52968/SRR1042853.sort.bam  annotati
 This step creats the P-site track for transcripts of interests
 
 ```
-Usage: ./create_track_Ribo.sh <Ribo_bam>  <transcripts.exon.gtf>  <genome>  <out_dir> <output_identifier> <scripts_dir>
+Usage: ./create_track_Ribo.sh <Ribo_bam>  <transcripts.exon.gtf>  <genome>  <out_dir> <output_name> <scripts_dir>
 
 Example1: scripts/create_track_Ribo.sh  GSE52968/SRR1042853.sort.bam  annotation_yeast/exons.gtf  annotation_yeast/genome GSE52968  SRR1042853  scripts;
 
 Example2: scripts/create_track_Ribo.sh  GSE52799/SRR1039770.sort.bam  annotation_fly/chrX.exons.gtf annotation_fly/genome GSE52799  SRR1039770  scripts;
 ```
+
+#### Input files:
+
+- <Ribo_bam> 
+
+- <exons.gtf> :  a gtf file for only the exons from transcripts of intersect, eg: `chrX.exons.gtf`, `exons.gtf`
+
+- <genome size> :  the file including all the chromosomes and its length, `genome` may look like this:
+    
+    ```
+    I 230218
+    II  813184
+    III 316620
+    IV  1531933
+    ```
+    
+- out_dir 	: the directory of the output result, eg: `GSE52968`
+
+- output_name 	: the name of all the output file, default: test. eg: `SRR1042853` 
+
+- scripts_dir 	: the directory of all the scripts in the package
 
 #### Output files:
 
@@ -130,61 +144,82 @@ Example2: scripts/create_track_Ribo.sh  GSE52799/SRR1039770.sort.bam  annotation
   YAL045C 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
   YAL046C 3,0,0,2,0,0,4,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,1,0,0,16,0,0,6,0,0,0,0,0,12,0,0,19,0,0,0,0,0,5,0,1,5,0,0,0,0,1,6,0,0,0,0,0,14,0,0,2,0,0,7,0
   ```
+  
+## Main function
 
-### 3. RiboWave main function
+### 3. RiboWave
 
-This step predicts the translated ORF
+This step can achieve multiple functions : 
+
+  - providing predicted p value for each given ORF to identify its translation status [`pvalue`]
+  
+  - providing reads density (P-site/PF P-site) for each given ORF [`density`]
+  
+  - providing frameshift potential (CRF score) for each given ORF [`CRF`]
+
 
 ```
-Usage: ./create_track_Ribo.sh <transcript exon gtf> <genome>  <out_dir> <output_header> <scripts_dir> <cores>
-
-Example: scripts/main_function.sh annotation_yeast/final.ORFs GSE52968  SRR1042853  scripts 8;
+./main_function.sh -h
 ```
+
+A helper message will be shown: 
+
+```
+----------------------------------------------------------------------------------------------------
+RiboWave : version 1.0 
+This step is main function of RiboWave.                                               
+Functions are provided including : predicting translated ORF, estimating reads density, predicting frameshift events.
+----------------------------------------------------------------------------------------------------
+
+Usage:
+	 main_function.sh [-h] <job> -a P-site track -b ORF_list -o output_dir [-n output_name] -s scripts_dir [-p core]
+
+Options:
+	<job>	<string>  	(pvalue : provide the pvalue for each given ORF;		density : provide reads density for each given ORF;	CRF : provide frameshift potential for each given ORF)
+	-a	<filename>	(psite track                                       )
+	-b	<filename>	(ORF list                                          )
+	-o	<directory>	(Output directory                                  )
+	-s	<directory>	(Script directory                                  )
+	-n	<string>  	(The name of the output file, default: test        )
+	-p	<int>     	(The number of threads, default: 1                 )
+	-h	          	(Help                                              )
+----------------------------------------------------------------------------------------------------
+```
+
+
+It might take hours to perform the analysis if the input is large. It is **recommended** to specify the number of CPU cores through the `-p` option. 
+
+Run `main_function.sh` on example:
+
+```
+scripts/main_function.sh     pvalue -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/main_function.sh     density -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/main_function.sh     CRF -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+```
+
+#### Input files:
+
+- <P-site track> : output from the previous step, containing the P-site track of transcripts of interest
+ 
+ - <ORF_list> : ORFs of interest ,eg : `final.ORFs`
 
 #### Output files:
 
-* _identifier_.feats1 	: the features of ORFs including chi-square P-value information
-
-* _identifier_.COV	: reads coverage of ORFs
-
-
-### 4. Identify translated ORF
-
-This step incorporates all the information from each ORF and find ORFs that are predicted to be translated ( P-value < 0.05) 
-
-```
-Usage: ./translated_protein_annotation.sh <annotation_dir>  <out_dir> <output_header> <scripts_dir>
-
-Example: scripts/translated_protein_annotation.sh annotation_yeast  GSE52968  SRR1042853  scripts;
-```
-
-#### Output files:
-
-* _identifier_.mx 			: the combined information of all ORFs including chi-square P-value information and coverage information. It may look this this : 
-
-  ```
-  ORFID	TRtype	label	codon	getorf	orflonger	TRID	Start	Stop	psites	Start	Covfrm	CovORF	pvalue	upstream_3nt	startPsite
-  YAL001C_0_1_3480	coding	unanno	ATG	1	3480	YAL001C	1	3480	67	0	0.0482758620689655	0.0192528735632184	1	0	0
-  YAL001C_0_382_3480	coding	unanno	ATG	382	3480	YAL001C	382	3480	67	0	0.0435624394966118	0.0167796063246208	1	0.0207452938916635	0
-  YAL001C_0_943_3480	coding	unanno	ATG	943	3480	YAL001C	943	3480	67	0	0.0378250591016548	0.0149724192277384	1	0.119861698040722	0
-  ```
-  
-  
+* _name_.feats1 	: the features of ORFs including chi-square P-value information
 
 **`result`** directory, including :
 
-* _identifier_.95%.mx 	: protein products predicted to be translated in the sample within the cutoff of P-value < 0.05
+* _name_.95%.mx 	: the final translated product of RiboWave with translation initiation sites specified. It may look like this :
 
-* _identifier_.95%.ORF_category : annotate ORFs in _identifier_.95%.mx by the relative position of the annotated ORF and customize the output. It may look like this:
+```
+YBR073W_0_103_2874
+YBR152W_0_406_873
+YBR197C_0_292_651
+```
 
-  ```
-  ORF_ID  gene_annotation ORF_annotation
-  FBtr0070007_2_93_1028	NC	anno
-  FBtr0070052_2_255_905	NC	truncated
-  FBtr0071362_2_330_1952	NC	extended
-  FBtr0070151_0_247_294	NC	uORF
-  FBtr0070379_2_3693_3761	NC	internal_overlapped
-  FBtr0347011_0_667_2583	NC	unanno
-  ```
+* _name_.COV	: reads density (P-site/PF P-site) of given ORFs
+
+* _name_.CRF  : ORFs that might experience reading frame translocation. 
+
   
 
