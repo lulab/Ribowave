@@ -40,9 +40,34 @@ It is **recommanded** to make a new directory and move the `Ribo-seq bam file` i
 This step scans for and annotates all putative ORFs 
 
 ```
-Usage: ./create_annotation.sh <genome.gtf> <fasta> <annotation_dir> <scripts_dir>
+./create_annotation.sh -h
+```
 
-Example: scripts/create_annotation.sh annotation_yeast  annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.90.gtf  annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa scripts;
+A helper message is shown:
+
+```
+----------------------------------------------------------------------------------------------------
+RiboWave : version 1.0 
+This step is set for the purpose of genome annotation.                                
+Several of the output is necessary for the following steps.                         
+----------------------------------------------------------------------------------------------------
+
+Usage:
+	 create_annotation.sh [-h] -G annotation.gtf -f fasta -o annotation_dir -s scripts_dir
+
+Options:
+	-G	<filename>	(annotation.gtf                                    )
+	-f	<filename>	(genome fasta                                      )
+	-o	<directory>	(Output annotation directory                       )
+	-s	<directory>	(Script directory                                  )
+	-h	          	(Help                                              )
+----------------------------------------------------------------------------------------------------
+```
+
+Run `create_annotation.sh` on example:
+
+```
+scripts/create_annotation.sh -G annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.90.gtf -f annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa -o annotation_yeast -s scripts;
 ```
 
 #### Input files:
@@ -50,9 +75,11 @@ Example: scripts/create_annotation.sh annotation_yeast  annotation_yeast/Sacchar
 - <genome.fasta> : eg: `Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa` 
 
 - <annotation_dir> :  the directory for all the annotation output
+
 - <scripts_dir> 	: the directory of all the scripts in the package
 
 #### Output files:
+
 **`annotation`** directory, including :
 
 * start_codon.bed 	: annotated start codon 
@@ -64,9 +91,35 @@ Example: scripts/create_annotation.sh annotation_yeast  annotation_yeast/Sacchar
 This step determine the P-site position for each read length by overlapping with the annotated start codon 
 
 ```
-Usage: ./P-site_determination.sh  <Ribo_bam>  <start_codon.bed> <out_dir> <output_identifier> <scripts_dir>
+./P-site_determination.sh -h
+```
 
-Example: scripts/P-site_determination.sh  GSE52968/SRR1042853.sort.bam  annotation_yeast/start_codon.bed  GSE52968  SRR1042853  scripts;
+A helper message is shown:
+
+```
+----------------------------------------------------------------------------------------------------
+RiboWave : version 1.0 
+This step is for determining the P-site position for each read length.                
+                                                                                    
+----------------------------------------------------------------------------------------------------
+
+Usage:
+	 P-site_determination.sh [-h] -i Ribo.bam -S start_codon.bed -o out_dir -s scripts_dir [-n study name]
+
+Options:
+	-i	<filename>	(Ribo-seq bam                                      )
+	-S	<filename>	(start codon annotation file                       )
+	-o	<directory>	(Output annotation directory                       )
+	-s	<directory>	(Script directory                                  )
+	-n	<string>  	(study name, defult:test                           )
+	-h	          	(Help                                              )
+----------------------------------------------------------------------------------------------------
+```
+
+Run `P-site_determination.sh` on example :
+
+```
+scripts/P-site_determination.sh  -i GSE52968/SRR1042853.sort.bam  -S annotation_yeast/start_codon.bed  -o GSE52968  -n SRR1042853  -s scripts;
 ```
 
 #### Input files:
@@ -104,11 +157,38 @@ Example: scripts/P-site_determination.sh  GSE52968/SRR1042853.sort.bam  annotati
 This step creats the P-site track for transcripts of interests
 
 ```
-Usage: ./create_track_Ribo.sh <Ribo_bam>  <transcripts.exon.gtf>  <genome>  <out_dir> <output_name> <scripts_dir>
+./create_track_Ribo.sh -h
+```
 
-Example1: scripts/create_track_Ribo.sh  GSE52968/SRR1042853.sort.bam  annotation_yeast/exons.gtf  annotation_yeast/genome GSE52968  SRR1042853  scripts;
+A helper message is shown:
 
-Example2: scripts/create_track_Ribo.sh  GSE52799/SRR1039770.sort.bam  annotation_fly/chrX.exons.gtf annotation_fly/genome GSE52799  SRR1039770  scripts;
+```
+----------------------------------------------------------------------------------------------------
+RiboWave : version 1.0 
+This step is the last step for data processing where P-site track is generated for each transcript.
+                                                                                    
+----------------------------------------------------------------------------------------------------
+
+Usage:
+	 create_track_Ribo.sh [-h] -i Ribo.bam -G exons.gtf -g genome_size -P psite.position -o out_dir -s scripts_dir [-n study name]
+
+Options:
+	-G	<filename>	(Ribo-seq bam                                      )
+	-g	<filename>	(Genome size annotation file                       )
+	-P	<filename>	(P-site position (offset+1)                        )
+	-o	<directory>	(Output annotation directory                       )
+	-s	<directory>	(Script directory                                  )
+	-n	<string>  	(study name, defult:test                           )
+	-h	          	(Help                                              )
+----------------------------------------------------------------------------------------------------
+```
+
+Run `create_track_Ribo.sh` on example:
+
+```
+scripts/create_track_Ribo.sh  -i GSE52968/SRR1042853.sort.bam  -G annotation_yeast/exons.gtf  -g annotation_yeast/genome -P GSE52968/P-site/SRR1042853.psite1nt.txt  -o GSE52968 -n SRR1042853 -s scripts;
+
+scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly/chrX.exons.gtf -g annotation_fly/genome -P GSE52799/P-site/SRR1039770.psite1nt.txt  -o GSE52799 -n SRR1039770 -s scripts;
 ```
 
 #### Input files:
