@@ -187,7 +187,6 @@ Run `create_track_Ribo.sh` on example:
 
 ```
 scripts/create_track_Ribo.sh  -i GSE52968/SRR1042853.sort.bam  -G annotation_yeast/exons.gtf  -g annotation_yeast/genome -P GSE52968/P-site/SRR1042853.psite1nt.txt  -o GSE52968 -n SRR1042853 -s scripts;
-
 scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly/chrX.exons.gtf -g annotation_fly/genome -P GSE52799/P-site/SRR1039770.psite1nt.txt  -o GSE52799 -n SRR1039770 -s scripts;
 ```
 
@@ -205,7 +204,9 @@ scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly
     III 316620
     IV  1531933
     ```
-    
+
+- <P-site_position> :  the file listing the P-site position for each read length. This file can be found in the output of previous step, _name_.psite1nt.txt
+
 - out_dir 	: the directory of the output result, eg: `GSE52968`
 
 - output_name 	: the name of all the output file, default: test. eg: `SRR1042853` 
