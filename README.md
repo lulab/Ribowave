@@ -311,7 +311,7 @@ scripts/main_function.sh -F -a GSE52968/bedgraph/SRR1042853/final.psite -b annot
 ##### Multiple functions 
 
 ```
-scripts/Ribowave -PDF -T 12378563 GSE52968/mRNA/SRR1042851.FPKM -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968/Ribowave   -n SRR1042853 -s $scripts -p 8;
+scripts/Ribowave -PDF -T 12378563 GSE52968/mRNA/SRR1042851.FPKM -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968/Ribowave   -n SRR1042853 -s scripts -p 8;
 ```
 
 #### Input files:
