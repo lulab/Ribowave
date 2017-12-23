@@ -373,7 +373,7 @@ Column2		| ORF
 Column3		| TE
 
 
-* _name_.CRF  		: ORFs that might experience reading frame translocation. It may look like this :
+* _name_.CRF.final  	: ORFs that might experience reading frame translocation. It may look like this :
 
 Column | Explanation	
 ------------ | -------------
