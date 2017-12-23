@@ -322,13 +322,13 @@ scripts/Ribowave -PDF -T 12378563 GSE52968/mRNA/SRR1042851.FPKM -a GSE52968/bedg
 
 - <Ribo-seq total reads\> : the total number of Ribo-seq reads to calculate FPKM , eg: `12378563`
 
-- <RNA FPKM> : FPKM table. It may look like this :
+- <RNA FPKM\> : FPKM table. It may look like this :
 
 	```
 	YAL067W-A       0
 	YAL064C-A       0.834264
-	YAL066W 0.452034
-	YAL067C 3.0719
+	YAL066W 	0.452034
+	YAL067C 	3.0719
 	YAL064W-B       5.00558
 	```
 
