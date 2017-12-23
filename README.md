@@ -231,15 +231,19 @@ scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly
 
 This step can achieve multiple functions : 
 
+  - denoising [`denoise`]
+
   - providing predicted p value for each given ORF to identify its translation status [`pvalue`]
   
   - providing reads density (P-site/PF P-site) for each given ORF [`density`]
   
+  - providing translation efficiency (TE) estimation for each given ORF [`TE`]
+  
   - providing frameshift potential (CRF score) for each given ORF [`CRF`]
-
+  
 
 ```
-./main_function.sh -h
+./Ribowave -h
 ```
 
 A helper message will be shown: 
@@ -248,33 +252,66 @@ A helper message will be shown:
 ----------------------------------------------------------------------------------------------------
 RiboWave : version 1.0 
 This step is main function of RiboWave.                                               
-Functions are provided including : predicting translated ORF, estimating reads density, predicting frameshift events.
+Functions are provided including : predicting translated ORF, estimating reads density, estimating translation efficiency and predicting frameshift events.
 ----------------------------------------------------------------------------------------------------
 
 Usage:
-	 main_function.sh [-h] <job> -a P-site track -b ORF_list -o output_dir -s scripts_dir [-n output_name] [-p core]
+	 Ribowave [Options] -a P-site track -b ORF_list -o output_dir -s scripts_dir
 
 Options:
-	<job>	<string>  	(pvalue : provide the pvalue for each given ORF;		density : provide reads density for each given ORF;	CRF : provide frameshift potential for each given ORF)
-	-a	<filename>	(psite track                                       )
-	-b	<filename>	(ORF list                                          )
-	-o	<directory>	(Output directory                                  )
-	-s	<directory>	(Script directory                                  )
-	-n	<string>  	(The name of the output file, default: test        )
-	-p	<int>     	(The number of threads, default: 1                 )
-	-h	          	(Help                                              )
+	-P	                    	(providing P value for each ORF                    )
+	-D	                    	(providing reads abundance for each ORF            )
+	-F	                    	(predicting frameshift potential for each ORF      )
+	-T	<int>  <RNA_FPKM>   	(estimating TE for each ORF                        )
+	-a	<filename>          	(psite track                                       )
+	-b	<filename>          	(ORF list                                          )
+	-o	<directory>         	(Output directory                                  )
+	-s	<directory>         	(Script directory                                  )
+	-n	<string>            	(The name of the study, default: test              )
+	-p	<int>               	(The number of threads, default: 1                 )
+	-h	                    	(Help                                              )
 ----------------------------------------------------------------------------------------------------
 ```
 
 
 It might take hours to perform the analysis if the input is large. It is **recommended** to specify the number of CPU cores through the `-p` option. 
 
-Run `main_function.sh` on example:
+Run `Ribowave` on example:
+
+##### Denoise the P-site track
 
 ```
-scripts/main_function.sh     pvalue	 -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
-scripts/main_function.sh     density	 -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
-scripts/main_function.sh     CRF 	 -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/main_function.sh -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+```
+
+##### Identifying translated ORF
+
+```
+scripts/main_function.sh -P -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+```
+
+##### Estimating abundance 
+
+```
+scripts/main_function.sh -D -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+```
+
+##### Estimating TE
+
+```
+scripts/main_function.sh -T 12378563 GSE52968/mRNA/SRR1042851.FPKM -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+```
+
+##### Calculating frameshift potential 
+
+```
+scripts/main_function.sh -F -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+```
+
+##### Multiple functions 
+
+```
+scripts/Ribowave -PDF -T 12378563 GSE52968/mRNA/SRR1042851.FPKM -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968/Ribowave   -n SRR1042853 -s $scripts -p 8;
 ```
 
 #### Input files:
@@ -283,21 +320,33 @@ scripts/main_function.sh     CRF 	 -a GSE52968/bedgraph/SRR1042853/final.psite -
 
 - <ORF_list> : ORFs of interest ,eg : `final.ORFs`
 
+- <Ribo-seq total reads\> : the total number of Ribo-seq reads to calculate FPKM , eg: `12378563`
+
+- <RNA FPKM> : FPKM table. It may look like this :
+
+	```
+	YAL067W-A       0
+	YAL064C-A       0.834264
+	YAL066W 0.452034
+	YAL067C 3.0719
+	YAL064W-B       5.00558
+	```
+
 #### Output files:
 
 * _name_.feats1 	: the features of ORFs including chi-square P-value information. It may look like this :
 
 Column | Explanation	
 ------------ | -------------
-Column1-Column7 | Basic information about the ORF
-Column8		| Reads coverage within the ORF
-Column9		| P-value predicted by RiboWave
-Column10	| Translational signal outside current ORF
-Column11	| Reads intensity at start codon
+Column1-Column4 | Basic information about the ORF
+Column5		| Reads coverage within the ORF
+Column6		| P-value predicted by RiboWave
+Column7		| Translational signal outside current ORF
+Column8		| Reads intensity at start codon
 
 **`result`** directory, including :
 
-* _name_.95%.mx 	: the final translated product of RiboWave with translation initiation sites specified. It may look like this :
+* _name_.95%.mx 	: the final translated product of RiboWave with translation initiation sites specified ( **p.value < 0.05** ) . It may look like this :
 
 ```
 YBR073W_0_103_2874
@@ -305,16 +354,26 @@ YBR152W_0_406_873
 YBR197C_0_292_651
 ```
 
-* _name_.COV	: reads density (P-site/PF P-site) of given ORFs. It may look like this : 
+* _name_.density	: reads density ( **PF P-site** ) of given ORFs. It may look like this : 
 
 Column | Explanation	
 ------------ | -------------
-Column1-Column6 | Basic information about the ORF
-Column7		| P-site density within the ORF
-Column8		| Denoised PF P-site density within the ORF
+Column1-Column4 | Basic information about the ORF
+Column5		| number of PF P-sites in transcript
+Column6		| number of PF P-sites in given ORF
+Column7		| Density of PF P-sites in given ORF
 
 
-* _name_.CRF  : ORFs that might experience reading frame translocation. It may look like this :
+* _name_.TE   		: TE of given ORFs. It may look like this :
+
+Column | Explanation	
+------------ | -------------
+Column1		| transcript 
+Column2		| ORF 
+Column3		| TE
+
+
+* _name_.CRF  		: ORFs that might experience reading frame translocation. It may look like this :
 
 Column | Explanation	
 ------------ | -------------
