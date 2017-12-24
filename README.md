@@ -73,7 +73,7 @@ scripts/create_annotation.sh -G annotation_yeast/Saccharomyces_cerevisiae.R64-1-
 
 #### Input files:
 - <annotation.gtf> : the annotation gtf should contain **start_codon** and **stop_codon** information,eg: `Saccharomyces_cerevisiae.R64-1-1.90.gtf` 
-- <genome.fasta> : eg: `Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa` 
+- <genome.fasta> : genome fasta ,eg: `Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa` 
 
 - <annotation_dir> :  the directory for all the annotation output
 
