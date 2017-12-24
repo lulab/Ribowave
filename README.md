@@ -85,7 +85,7 @@ scripts/create_annotation.sh -G annotation_yeast/Saccharomyces_cerevisiae.R64-1-
 
 * start_codon.bed 	: annotated start codon 
 
-* final.ORFs 	: all ORFs, eg: `YAL001C_0_1_3480` where YAL001C refers to the transcript, 0 refers to the reading frame, 1 refers to the start site, 3480 refers to the stop codon.  
+* final.ORFs 	: all ORFs, eg: `YAL001C_0_1_3480` where `YAL001C` refers to the transcript, `0` refers to the reading frame, `1` refers to the start site, `3480` refers to the stop codon.  
 
 ### 1. P-site determination
 
@@ -319,7 +319,7 @@ scripts/Ribowave -PDF -T 12378563 GSE52968/mRNA/SRR1042851.FPKM -a GSE52968/bedg
 #### Input files:
 
 - **`bedgraph/name`**:
-	- <P-site track\> : output from the previous step, containing the P-site track of transcripts of interest
+	- <P-site track\> : output from the previous step, containing the P-site track of transcripts of interest, eg: `final.psite`
 
 - <ORF_list> : ORFs of interest ,eg : `final.ORFs`
 
