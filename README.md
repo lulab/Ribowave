@@ -12,9 +12,10 @@ The RiboWave workflow consists of:
   - Generate P-site tracks from Ribo-seq, dependent on P-sites calculation cutoffs.[`create_track_Ribo.sh`]
 
 - Main function :
-  - Predict translated ORFs [`main_function.sh  pvalue`]
-  - Estimate reads density for each given ORF [`main_function.sh  density`]
-  - Estimate frameshift potential for each given ORF [`main_function.sh  CRF`]
+  - Denoise [`Ribowave`]
+  - Predict translated ORFs [`Ribowave`]
+  - Estimate reads density for each given ORF [`Ribowave`]
+  - Estimate frameshift potential for each given ORF [`Ribowave`]
 
 
 ## Requirements
@@ -130,7 +131,7 @@ scripts/P-site_determination.sh  -i GSE52968/SRR1042853.sort.bam  -S annotation_
 
 - out_dir 	: the directory of the output result, eg: `GSE52968`
 
-- output_name 	: the name of all the output file, default: test. eg: `SRR1042853` 
+- study_name 	: the name of all the output file, default: test. eg: `SRR1042853` 
 
 - scripts_dir 	: the directory of all the scripts in the package
 
@@ -209,7 +210,7 @@ scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly
 
 - out_dir 	: the directory of the output result, eg: `GSE52968`
 
-- output_name 	: the name of all the output file, default: test. eg: `SRR1042853` 
+- study_name 	: the name of all the output file, default: test. eg: `SRR1042853` 
 
 - scripts_dir 	: the directory of all the scripts in the package
 
@@ -233,13 +234,13 @@ This step can achieve multiple functions :
 
   - denoising [`denoise`]
 
-  - providing predicted p value for each given ORF to identify its translation status [`pvalue`]
+  - providing predicted p value for each given ORF to identify its translation status [`pvalue`,`-P`]
   
-  - providing reads density (P-site/PF P-site) for each given ORF [`density`]
+  - providing reads density (P-site/PF P-site) for each given ORF [`density`,`-D`]
   
-  - providing translation efficiency (TE) estimation for each given ORF [`TE`]
+  - providing translation efficiency (TE) estimation for each given ORF [`TE`,`-T`]
   
-  - providing frameshift potential (CRF score) for each given ORF [`CRF`]
+  - providing frameshift potential (CRF score) for each given ORF [`CRF`,`-F`]
   
 
 ```
