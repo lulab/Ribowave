@@ -207,7 +207,7 @@ scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly
     ```
 
 - **`P-site`**  : 
-	- <P-site_position> :  the file listing the P-site position for each read length. This file can be found in the output of previous step,  _name_.psite1nt.txt
+	- <P-site_position> :  the file listing the P-site position for each read length. This file can be found in the output of previous step, eg: _name_.psite1nt.txt
 
 - <out_dir> 	: the directory of the output result, eg: `GSE52968`
 
