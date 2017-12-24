@@ -9,7 +9,7 @@ The RiboWave workflow consists of:
 - Pre-processing :
   - Create the annotation file for the subsequent analysis. [`create_annotation.sh`]
   - Determine the P-site position of Ribo-seq. [`P-site_determination.sh`]
-  - Generate P-site tracks from Ribo-seq, dependent on P-sites calculation cutoffs.[`create_track_Ribo.sh`]
+  - Generate P-site tracks from Ribo-seq.[`create_track_Ribo.sh`]
 
 - Main function :
   - Denoise [`Ribowave`]
@@ -216,7 +216,7 @@ scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly
 
 #### Output files:
 
-**`bedgraph`** directory, including :
+**`bedgraph/name`** directory, including :
 
 * final.psite 	: P-site track for each interested transcript. It may look like this : 
   
