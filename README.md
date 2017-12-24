@@ -206,7 +206,8 @@ scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly
     IV  1531933
     ```
 
-- <P-site_position> :  the file listing the P-site position for each read length. This file can be found in the output of previous step,  _name_.psite1nt.txt
+- **`P-site`**  : 
+	- <P-site_position> :  the file listing the P-site position for each read length. This file can be found in the output of previous step,  _name_.psite1nt.txt
 
 - <out_dir> 	: the directory of the output result, eg: `GSE52968`
 
@@ -317,7 +318,8 @@ scripts/Ribowave -PDF -T 12378563 GSE52968/mRNA/SRR1042851.FPKM -a GSE52968/bedg
 
 #### Input files:
 
-- <P-site track\> : output from the previous step, containing the P-site track of transcripts of interest
+- **`bedgraph/name`**:
+	- <P-site track\> : output from the previous step, containing the P-site track of transcripts of interest
 
 - <ORF_list> : ORFs of interest ,eg : `final.ORFs`
 
@@ -347,7 +349,7 @@ Column8		| Reads intensity at start codon
 
 **`result`** directory, including :
 
-* _name_.95%.mx 	: the final translated product of RiboWave with translation initiation sites specified ( **p.value < 0.05** ) . It may look like this :
+* _name_.95%.mx 	: the final translated product of RiboWave with translation initiation sites specified (**p.value < 0.05**) . It may look like this :
 
 ```
 YBR073W_0_103_2874
