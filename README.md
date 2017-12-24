@@ -126,14 +126,14 @@ scripts/P-site_determination.sh  -i GSE52968/SRR1042853.sort.bam  -S annotation_
 #### Input files:
 - <Ribo_bam> :  **secondary alignment removed** and sorted
 
-- annotation_dir  : 
+- **`annotation`**  : 
   - <start_codon.bed> : annotated start site `start_codon.bed` 
 
-- out_dir 	: the directory of the output result, eg: `GSE52968`
+- <out_dir> 	: the directory of the output result, eg: `GSE52968`
 
-- study_name 	: the name of all the output file, default: test. eg: `SRR1042853` 
+- <study_name> 	: the name of all the output file, default: test. eg: `SRR1042853` 
 
-- scripts_dir 	: the directory of all the scripts in the package
+- <scripts_dir>	: the directory of all the scripts in the package
 
 
 #### Output files:
