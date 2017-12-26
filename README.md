@@ -190,7 +190,7 @@ Run `create_track_Ribo.sh` on example:
 scripts/create_track_Ribo.sh  -i GSE52968/SRR1042853.sort.bam  -G annotation_yeast/exons.gtf  -g annotation_yeast/genome -P GSE52968/P-site/SRR1042853.psite1nt.txt  -o GSE52968 -n SRR1042853 -s scripts;
 ```
 
-or
+or to just look at transcripts from chromosome X :
 
 ```
 scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly/chrX.exons.gtf -g annotation_fly/genome -P GSE52799/P-site/SRR1039770.psite1nt.txt  -o GSE52799 -n SRR1039770 -s scripts;
