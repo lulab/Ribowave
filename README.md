@@ -269,7 +269,7 @@ Options:
 	-P	                    	(providing P value for each ORF                    )
 	-D	                    	(providing reads abundance for each ORF            )
 	-F	                    	(predicting frameshift potential for each ORF      )
-	-T	<int>  <RNA_FPKM>   	(estimating TE for each ORF.<int> requires the input of total Ribo-seq reads number; <RNA_FPKM> requires the input of FPKM from paired RNA-seq                        )
+	-T	<int>  <RNA_FPKM>   	(estimating TE for each ORF.<int> requires total Ribo-seq reads number;<RNA_FPKM> requires RNA-seq FPKM)
 	-a	<filename>          	(psite track                                       )
 	-b	<filename>          	(ORF list                                          )
 	-o	<directory>         	(Output directory                                  )
