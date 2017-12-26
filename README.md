@@ -85,7 +85,7 @@ scripts/create_annotation.sh -G annotation_yeast/Saccharomyces_cerevisiae.R64-1-
 
 * start_codon.bed 	: annotated start codon 
 
-* final.ORFs 	: all ORFs, eg: `YAL001C_0_1_3480` where `YAL001C` refers to the transcript, `0` refers to the reading frame, `1` refers to the start site, `3480` refers to the stop codon.  
+* final.ORFs 	: all ORFs, eg: `YAL001C_0_1_3480` where `YAL001C` refers to the transcript, `0` refers to the reading frame relative to the start of transcript, `1` refers to the start site, `3480` refers to the stop codon.  
 
 ### 1. P-site determination
 
