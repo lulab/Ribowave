@@ -124,7 +124,7 @@ scripts/P-site_determination.sh  -i GSE52968/SRR1042853.sort.bam  -S annotation_
 ```
 
 #### Input files:
-- <Ribo_bam> :  **secondary alignment removed** and sorted
+- <Ribo_bam> :  **secondary alignment removed**  to ensure one genomic position per aligned read and sorted
 
 - **`annotation`**  : 
   - <start_codon.bed> : annotated start site `start_codon.bed` 
