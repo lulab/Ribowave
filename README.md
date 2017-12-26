@@ -283,7 +283,7 @@ Run `Ribowave` on example:
 ##### Denoise the P-site track
 
 ```
-scripts/main_function.sh -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/Ribowave -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
 ```
 
 ##### Identifying translated ORF
