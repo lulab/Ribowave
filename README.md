@@ -289,25 +289,25 @@ scripts/main_function.sh -a GSE52968/bedgraph/SRR1042853/final.psite -b annotati
 ##### Identifying translated ORF
 
 ```
-scripts/main_function.sh -P -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/Ribowave -P -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
 ```
 
 ##### Estimating abundance 
 
 ```
-scripts/main_function.sh -D -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/Ribowave -D -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
 ```
 
 ##### Estimating TE
 
 ```
-scripts/main_function.sh -T 12378563 GSE52968/mRNA/SRR1042851.FPKM -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/Ribowave -T 12378563 GSE52968/mRNA/SRR1042851.FPKM -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
 ```
 
 ##### Calculating frameshift potential 
 
 ```
-scripts/main_function.sh -F -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/Ribowave -F -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
 ```
 
 ##### Multiple functions 
