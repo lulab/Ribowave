@@ -269,7 +269,7 @@ Options:
 	-P	                    	(providing P value for each ORF                    )
 	-D	                    	(providing reads abundance for each ORF            )
 	-F	                    	(predicting frameshift potential for each ORF      )
-	-T	<int>  <RNA_FPKM>   	(estimating TE for each ORF                        )
+	-T	<int>  <RNA_FPKM>   	(estimating TE for each ORF.<int> requires the input of total Ribo-seq reads number; <RNA_FPKM> requires the input of FPKM from paired RNA-seq                        )
 	-a	<filename>          	(psite track                                       )
 	-b	<filename>          	(ORF list                                          )
 	-o	<directory>         	(Output directory                                  )
@@ -304,6 +304,8 @@ scripts/Ribowave -D -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_ye
 ```
 
 ##### Estimating TE
+IMPORTANT :
+when estimating TE, user should input the ** number of total Ribo-seq reads** and the **FPKM value of paired RNA-seq**
 
 ```
 scripts/Ribowave -T 12378563 GSE52968/mRNA/SRR1042851.FPKM -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
