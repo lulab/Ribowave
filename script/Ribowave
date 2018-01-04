@@ -1,0 +1,353 @@
+#!/bin/bash
+
+###################################################################
+#    This file is part of RiboWave.
+#    RiboWave is powerful Ribo-seq analysis tool that is able to 
+#    denoise the Ribo-seq data and serve for multiple functions.
+#       
+#    RiboWave can be used for multiple purposes: 
+#               1. denoise the raw Ribo-seq data
+#               2. define translated ORFs
+#               3. estimate the abundance of actively elongating ribosomes
+#               4. estimate translation efficiency(TE)
+#               5. identify potential frameshift candidates
+#    
+#    Author: Zhiyu Xu, Long Hu
+#
+#    Copyright (C) 2017  Zhiyu Xu
+#
+#    RiboWave is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#    Contact: xanthexu18@gmail.com
+#######################################################################
+
+
+#------
+#Set fonts for Help.
+#------
+NORM=`tput sgr0`
+BOLD=`tput bold`
+REV=`tput smso`
+#get script name
+#------
+SCRIPT=`basename ${BASH_SOURCE[0]}`
+#------
+#HELP function
+#------
+function HELP
+{
+        printf -v line '%*s' "100"; echo -e "${line// /-}";
+	echo -e "${BOLD}RiboWave : version 1.0 ${NORM}";
+	printf '%-90s\n%-90s\n' "${BOLD}This step is main function of RiboWave." "Functions are provided including : predicting translated ORF, estimating reads density, estimating translation efficiency and predicting frameshift events.${NORM}";
+	printf -v line '%*s' "100"; echo -e "${line// /-}\n";
+	echo -e "${BOLD}Usage:${NORM}\n\t ${SCRIPT} [Options] -a P-site track -b ORF_list -o output_dir -s scripts_dir"\\n;
+	echo -e "${BOLD}Options:${NORM}";
+	printf "\t%2s\t%-20s\t%1s%-50s%1s\n" "-P" "" "(" "providing P value for each ORF" ")"
+	printf "\t%2s\t%-20s\t%1s%-50s%1s\n" "-D" "" "(" "providing reads abundance for each ORF" ")"
+	printf "\t%2s\t%-20s\t%1s%-50s%1s\n" "-F" "" "(" "predicting frameshift potential for each ORF" ")"
+	printf "\t%2s\t%-20s\t%1s%-50s%1s\n" "-T" "<int>  <RNA_FPKM>" "(" "estimating TE for each ORF.<int> requires total Ribo-seq reads number;<RNA_FPKM> requires RNA-seq FPKM" ")"
+	printf "\t%2s\t%-20s\t%1s%-50s%1s\n" "-a" "<filename>" "(" "psite track" ")"
+	printf "\t%2s\t%-20s\t%1s%-50s%1s\n" "-b" "<filename>" "(" "ORF list" ")"
+	printf "\t%2s\t%-20s\t%1s%-50s%1s\n" "-o" "<directory>" "(" "Output directory" ")"
+	printf "\t%2s\t%-20s\t%1s%-50s%1s\n" "-s" "<directory>" "(" "Script directory " ")"
+	
+	printf "\t%2s\t%-20s\t%1s%-50s%1s\n" "-n" "<string>" "(" "The name of the study, default: test" ")"
+	printf "\t%2s\t%-20s\t%1s%-50s%1s\n" "-p" "<int>" "(" "The number of threads, default: 1" ")"
+	printf "\t%2s\t%-20s\t%1s%-50s%1s\n" "-h" "" "(" "Help" ")"
+	printf -v line '%*s' "100";echo ${line// /-}	
+	exit 0
+}
+if [ $# == 0 ] ;then
+        HELP;
+        exit 1
+fi
+
+
+
+##### denoise
+while getopts :T:a:b:o:s:n:p:hPDF FLAG; do
+        case $FLAG in
+                P) #provide pvalue
+		pvalue=1;
+		;;
+		D) #provide abudance estimation
+		density=1;
+		;;
+		F) #provide frameshift estimation
+		CRF=1;
+		;;
+		T) #provide the TE
+		TE=1;
+		depth=$(eval "echo \$$((OPTIND - 1))")
+		if [[ "$(eval "echo \$$((OPTIND))")" =~ ^- ]];then
+			echo "--------------------------------"
+			echo "Error: need two arguments for -T"
+			echo "--------------------------------"
+			echo ""
+			echo ""
+			exit 1
+		fi;
+		RNA=$(eval "echo \$$((OPTIND))")
+		if ! [[ "$(eval "echo \$$(($OPTIND + 1))")" =~ ^- ]];then
+			echo "-----------------------------------"
+			echo "Error: extra arguments given for -T"
+			echo "-----------------------------------"
+			echo ""
+			echo ""
+			exit 1
+		fi
+		shift 1
+		;;
+		a) #set input track "a"
+                track=$OPTARG
+                #echo "-a used:$OPTARG"
+                ;;
+		b) #set ORF list "o"
+                ORF=$OPTARG
+                #echo "-b used:$OPTARG"
+                ;;
+                o) #set output directory "o"
+                out_dir=$OPTARG
+                #echo "-o used:$OPTARG"
+                ;;
+                s) #set script directory "s"
+                script_dir=$OPTARG
+                #echo "-s used:$OPTARG"
+                ;;
+                n) #set study name "n"
+                name=$OPTARG
+                #echo "-n used:$OPTARG"
+                ;;
+                p) #set thread
+                thread=$OPTARG
+                ;;
+                h) #set hellp
+                HELP
+                ;;
+		\?) #unrecognized option - show help;
+                HELP
+                ;;
+        esac
+done
+shift $((OPTIND-1))
+echo $OPTARG;
+shift $((OPTIND-1))
+echo $OPTARG;
+
+### End getopts code ###
+### Main loop to process files ###
+while [ $# -ne 0 ]; do
+  FILE=$1
+  #TEMPFILE=`basename $FILE`
+  TEMPFILE="${FILE##*/}"  #
+  FILE_BASE=`echo "${TEMPFILE%.*}"`  #file without extension
+  FILE_EXT="${TEMPFILE##*.}" 
+  shift  #Move on to next input file.
+done
+### End main loop ###
+
+mkdir -p $out_dir;
+#------
+#Test file exists or not.
+#------
+if ! [[ -f $track ]];then
+	echo "Error!!!!!   P-site track file not found!."
+	HELP
+fi
+if ! [[ -f $ORF ]];then
+	echo "Error!!!!!   ORF list not found!."
+        HELP
+fi
+if ! [[ -d $out_dir ]];then
+	echo "Error!!!!!   output_dir not found!."
+        HELP
+fi
+if ! [[ $name ]];then
+        name="test";
+fi
+if ! [[ -d $script_dir ]];then
+	echo "Error!!!!!   script_dir not found!."
+	HELP
+fi
+if ! [[ $thread ]];then
+        thread=1;
+fi
+
+
+
+#------
+#get file name and path
+#------
+track_full="`readlink -e $track`";
+ORF_full="`readlink -e $ORF`";
+out_dir_full="`readlink -e $out_dir`";
+script_dir_full=`readlink -e $script_dir`
+
+
+
+echo "--- RiboWave ---";
+echo "--- Start denoising ---";
+date;
+echo "Parameters used:"
+echo ""
+
+echo "<track>                   $track_full"
+echo "<output directory>        $out_dir_full"
+echo "<study name>              $name"
+echo "<scripts directory>       $script_dir_full"
+echo "<cores>                   $thread"
+echo ""
+echo "---------------"
+echo ""
+
+Rscript $script_dir_full/denoise.R      $track_full     $out_dir_full/$name.PF_psite    $thread $script_dir_full;
+
+echo "--- Denoising Done ---";
+echo ""
+echo ""
+
+
+
+### specify different functions
+denoised=$out_dir_full/$name.PF_psite;
+
+
+if [[ -n "$pvalue" ]];then
+		echo "Starting making predicitions on ORFs ...";
+                echo ""
+                echo "---------------"
+                echo "Parameters used:"
+		echo ""
+		echo "<denoised track>          $denoised"
+		echo "<ORF list>                $ORF_full";
+		echo "<output directory>        $out_dir_full"
+		echo "<study name>              $name"
+		echo "<scripts directory>       $script_dir_full"
+		echo "<cores>                   $thread"
+		echo ""
+		echo "---------------"
+		echo ""
+                mkdir -p $out_dir_full/tmp      ;
+                awk -F  '\t' '{b=split($1,a,"_");print a[1]"\t"$0"\t"a[1]"\t"a[(b-1)]"\t"a[b]}'         $ORF_full        >       $out_dir_full/tmp/ORFs.foo;
+                perl $script_dir_full/is_A_in_B.pl      $denoised       $out_dir_full/tmp/ORFs.foo      $out_dir_full/tmp/denoised;
+                perl $script_dir_full/is_A_in_B.pl      $out_dir_full/tmp/ORFs.foo      $out_dir_full/tmp/denoised $out_dir_full/tmp/ORFs.foo2;
+                cut -f 2-       $out_dir_full/tmp/ORFs.foo2     >       $out_dir_full/tmp/ORFs;
+                Rscript         $script_dir_full/TR_ORF_feats.R    $out_dir_full/tmp/denoised           $track_full           $out_dir_full/tmp/ORFs     $out_dir_full/$name.feats1    $thread  $script_dir_full;
+                echo "start classifer translated ORFs ...";
+		mkdir -p $out_dir_full/result;
+                awk '$6<0.05'               $out_dir_full/$name.feats1|  sort -k2,2 -k4,4g -k7,7g -k8,8gr -k3,3gr            >       $out_dir_full/result/foo1;
+                awk 'BEGIN{foo="";foo1="";}{if(foo!=$2"_"$4){print $0;foo=$2"_"$4;}}'   $out_dir_full/result/foo1       |awk -F '\t' '{print $1}'       >       $out_dir_full/result/$name.95%.mx;
+                rm -rf          $out_dir_full/result/*foo*;
+		echo ""
+		echo "--- Predition done! ---";
+		echo ""
+		echo ""
+fi;
+if [[ -n "$density" ]];then
+		echo "Starting estimating reads abundance of translational signal ...";
+                echo ""
+                echo "---------------"
+                echo "Parameters used:"
+                echo ""
+                echo "<denoised track>          $denoised"
+		echo "<ORF list>                $ORF_full"
+                echo "<output directory>        $out_dir_full"
+                echo "<study name>              $name"
+                echo "<scripts directory>       $script_dir_full"
+                echo "<cores>                   $thread"
+                echo ""
+                echo "---------------"
+                echo ""
+                mkdir -p $out_dir_full/tmp;
+                awk -F  '\t' '{b=split($1,a,"_");print a[1]"\t"$0"\t"a[1]"\t"a[(b-1)]"\t"a[b]}'         $ORF_full        >       $out_dir_full/tmp/ORFs.foo;
+                perl $script_dir_full/is_A_in_B.pl      $denoised       $out_dir_full/tmp/ORFs.foo      $out_dir_full/tmp/denoised;
+                perl $script_dir_full/is_A_in_B.pl      $out_dir_full/tmp/ORFs.foo      $out_dir_full/tmp/denoised $out_dir_full/tmp/ORFs.foo2;
+                cut -f 2-       $out_dir_full/tmp/ORFs.foo2     >       $out_dir_full/tmp/ORFs;
+                Rscript         $script_dir_full/TR_ORF_cov.R     $out_dir_full/tmp/denoised          $out_dir_full/tmp/ORFs     $out_dir_full/$name.density        $thread  $script_dir_full;
+		echo ""
+		echo "--- Estimation done! ---";
+		echo ""
+fi;
+if [[ -n "$CRF" ]];then
+		Cutoff=0.6;
+		echo "Starting prediting frameshift potential ...";
+                echo ""
+                echo "---------------"
+		echo "Parameters used:"
+                echo ""
+                echo "<denoised track>          $denoised"
+                echo "<ORF list>                $ORF_full"
+		echo "<output directory>        $out_dir_full"
+                echo "<study name>              $name"
+                echo "<scripts directory>       $script_dir_full"
+                echo ""
+                echo "---------------"
+                echo ""
+                mkdir -p $out_dir_full/tmp;
+                awk -F '\t' 'split($1,a,"_"){print a[1]"\t"a[2]"\t"a[3]"\t"a[4]}'       $ORF    >       $out_dir_full/tmp/ORFs.foo;
+                perl $script_dir_full/is_A_in_B.pl      $denoised     $out_dir_full/tmp/ORFs.foo      $out_dir_full/tmp/denoised;
+                perl $script_dir_full/get_matrix_from_ID.pl     $out_dir_full/tmp/ORFs.foo      $out_dir_full/tmp/denoised $out_dir_full/tmp/ORFs.foo2;
+                paste   $out_dir_full/tmp/ORFs.foo2     $out_dir_full/tmp/denoised |awk -F '\t' '$1==$5{print $1"\t"$2"\t"$3"\t"$4"\t"$NF}'        >       $out_dir_full/tmp/denoised.ORF;
+                Rscript         $script_dir_full/TR_ORF_CRF.R           $out_dir_full/tmp/denoised.ORF     $out_dir_full/$name.CRF             $script_dir_full;
+                head -1 $out_dir_full/$name.CRF >   $out_dir_full/$name.CRF.final;
+                awk -F '\t' -v hah=$Cutoff 'split($1,a,"_") && $2 < a[4] && $2>a[3] && $NF > hah && split($4,b,",") && split(b[1],c,"_") && a[2]!=c[1] && c[2]>5{print $0}' $out_dir_full/$name.CRF     >>      $out_dir_full/$name.CRF.final;
+		echo ""
+		echo "--- Prediction done! ---";
+		echo ""
+fi;
+if [[ -n "$TE" ]];then
+		RNA_full="`readlink -e $RNA`";
+                echo "Starting estimating TE...";
+                echo ""
+                echo "---------------"
+                echo "Parameters used:"
+                echo ""
+                echo "<denoised track>          $denoised"
+                echo "<ORF list>                $ORF_full"
+		echo "<Ribo-seq depth>          $depth"
+		echo "<RNA FPKM>                $RNA_full"
+                echo "<output directory>        $out_dir_full"
+                echo "<study name>              $name"
+                echo "<scripts directory>       $script_dir_full"
+                echo ""
+                echo "---------------"
+                echo ""
+                mkdir -p $out_dir_full/tmp;
+		# check for $RNA file format (two columns)
+                awk 'NF!=2{print $0}'	$RNA_full	>	$out_dir_full/tmp/RNA.test;
+		N=`wc -l $out_dir_full/tmp/RNA.test|awk '{print $1}'`;
+		if [[ $N -gt 0 ]];then
+			echo "RNA FPKM file format has problem ..."
+			exit 1
+		fi
+		rm -rf $out_dir_full/tmp/RNA.test;
+		awk -F  '\t' '{b=split($1,a,"_");print a[1]"\t"$0"\t"a[1]"\t"a[(b-1)]"\t"a[b]}'         $ORF_full        >       $out_dir_full/tmp/ORFs.foo;
+                perl $script_dir_full/is_A_in_B.pl      $denoised       $out_dir_full/tmp/ORFs.foo      $out_dir_full/tmp/denoised;
+                perl $script_dir_full/is_A_in_B.pl      $out_dir_full/tmp/ORFs.foo      $out_dir_full/tmp/denoised $out_dir_full/tmp/ORFs.foo2;
+                cut -f 2-       $out_dir_full/tmp/ORFs.foo2     >       $out_dir_full/tmp/ORFs;
+                Rscript         $script_dir_full/TR_ORF_cov.R     $out_dir_full/tmp/denoised          $out_dir_full/tmp/ORFs     $out_dir_full/$name.density        $thread  $script_dir_full;
+		awk -F '\t' -v N=$depth	'NR>1 && split($1,a,"_"){print a[1]"\t"$1"\t"($NF*1000*1000000)/N}'	$out_dir_full/$name.density	>	$out_dir_full/$name.FPKM;
+		awk 'BEGIN{OFS="\t"}{NF=NF;print $0}'	$RNA_full	>	$out_dir_full/RNA.FPKM;
+		perl $script_dir_full/is_A_in_B.pl	$out_dir_full/RNA.FPKM	$out_dir_full/$name.FPKM	$out_dir_full/RNA.FPKM.foo;
+		N=`wc -l $out_dir_full/RNA.FPKM.foo|awk '{print $1}'`;
+		if [[ $N -eq 0 ]];then
+                        echo "No overlapped transcript FPKM  ..."
+                        exit 1
+                fi
+		perl $script_dir_full/is_A_in_B.pl	$out_dir_full/$name.FPKM	$out_dir_full/RNA.FPKM.foo	$out_dir_full/$name.FPKM.foo;
+		perl $script_dir_full/get_matrix_from_ID.pl	$out_dir_full/RNA.FPKM.foo	$out_dir_full/$name.FPKM.foo	$out_dir_full/RNA.FPKM.foo2;
+		echo -e "transcript\tORF\tTE"	>	$out_dir_full/$name.TE;
+		paste	$out_dir_full/$name.FPKM.foo	$out_dir_full/RNA.FPKM.foo2	|	awk -F '\t' '$1==$4{if($NF==0){print $1"\t"$2"\tInf"}else{print $1"\t"$2"\t"$3/$NF}}'	>>	$out_dir_full/$name.TE;
+		rm -rf $out_dir_full/*foo*;
+		echo ""
+                echo "--- Prediction done! ---";
+                echo ""
+fi;
+
+
+
+rm -rf $out_dir_full/tmp;
+echo "--- Done! ---";
+date;
