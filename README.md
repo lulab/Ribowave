@@ -398,7 +398,7 @@ Column8		| Fscore describing the potential of frameshift
 
 
 ## Example file
-An example file is packed and found in [RiboWave](http://lulab.life.tsinghua.edu.cn/RiboWave/RiboWave_v1.0.tar.gz).
+An example file is packed and found in [here](http://lulab.life.tsinghua.edu.cn/RiboWave/RiboWave_v1.0.tar.gz).
 
 Enclosed in the RiboWave_v1.0.tar.gz, `run_Ribowave_yeast.sh` combines all the steps together into a pipeline. 
 
