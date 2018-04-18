@@ -16,3 +16,5 @@ The RiboWave workflow consists of:
   - Predict translated ORFs [`Ribowave`]
   - Estimate reads density for each given ORF [`Ribowave`]
   - Estimate frameshift potential for each given ORF [`Ribowave`]
+
+#### More detail can be inferred from [RiboWave Github](https://github.com/lulab/Ribowave).
