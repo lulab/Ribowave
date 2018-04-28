@@ -38,7 +38,7 @@ It is **recommanded** to make a new directory and move the `Ribo-seq bam file` i
 
 ### 0. Create annotation
 
-This step scans for and annotates all putative ORFs 
+This step scans for and annotates all putative ORFs as well as define annotated ORF according to the annotation file
 
 ```
 ./create_annotation.sh -h
@@ -72,10 +72,10 @@ scripts/create_annotation.sh -G annotation_fly/dmel-all-r6.18.gtf -f annotation_
 ```
 
 #### Input files:
-- <annotation.gtf> : the annotation gtf should contain **start_codon** and **stop_codon** information,eg: `dmel-all-r6.18.gtf` 
-- <genome.fasta> : genome fasta ,eg: `dmel-all-chromosome-r6.18.fasta` 
+- <annotation.gtf>      : the annotation gtf should contain **start_codon** and **stop_codon** information,eg: `dmel-all-r6.18.gtf` 
+- <genome.fasta>        : genome fasta ,eg: `dmel-all-chromosome-r6.18.fasta` 
 
-- <annotation_dir> :  the directory for all the annotation output
+- <annotation_dir>      :  the directory for all the annotation output
 
 - <scripts_dir> 	: the directory of all the scripts in the package
 
@@ -89,7 +89,7 @@ scripts/create_annotation.sh -G annotation_fly/dmel-all-r6.18.gtf -f annotation_
 
 ### 1. P-site determination
 
-This step determine the P-site position for each read length by overlapping with the annotated start codon 
+This step determines the P-site position for each read length by overlapping with the annotated start codons 
 
 ```
 ./P-site_determination.sh -h
@@ -120,14 +120,14 @@ Options:
 Run `P-site_determination.sh` on example :
 
 ```
-scripts/P-site_determination.sh  -i GSE52799/SRR1039770.sort.bam  -S annotation_fly/start_codon.bed  -o GSE52799 -n SRR1039770   -s scripts;
+scripts/P-site_determination.sh -i GSE52799/SRR1039770.sort.bam -S annotation_fly/start_codon.bed -o GSE52799 -n SRR1039770 -s scripts;
 ```
 
 #### Input files:
 - <Ribo_bam> :  **secondary alignment removed**  to ensure one genomic position per aligned read and sorted
 
 - **`annotation`**  : 
-  - <start_codon.bed> : annotated start site `start_codon.bed` 
+  - <start_codon.bed> : annotated start site `start_codon.bed`. It is generated in the `create_annotation.sh` step.
 
 - <out_dir> 	: the directory of the output result, eg: `GSE52799`
 
@@ -183,7 +183,7 @@ Run `create_track_Ribo.sh` on example:
 ###### Just look at transcripts from chromosome X :
 
 ```
-scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly/X.exons.gtf  -g annotation_fly/genome  -P GSE52799/P-site/SRR1039770.psite1nt.txt -o GSE52799 -n SRR1039770 -s scripts;
+scripts/create_track_Ribo.sh -i GSE52799/SRR1039770.sort.bam -G annotation_fly/X.exons.gtf -g annotation_fly/genome -P GSE52799/P-site/SRR1039770.psite1nt.txt -o GSE52799 -n SRR1039770 -s scripts;
 ```
 
 #### Input files:
@@ -208,7 +208,7 @@ scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly
 
 - <study_name> 	: the name of all the output file, default: test. eg: `SRR1039770` 
 
-- <scripts_dir> 	: the directory of all the scripts in the package
+- <scripts_dir> : the directory of all the scripts in the package
 
 #### Output files:
 
@@ -297,7 +297,7 @@ scripts/Ribowave -D -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fl
 
 ##### Estimating TE
 IMPORTANT :
-when estimating TE, user should input the ** number of total Ribo-seq reads ** and the **FPKM value of paired RNA-seq**
+when estimating TE, user should input the **number of total Ribo-seq reads** and the **FPKM value from paired RNA-seq**
 
 ```
 scripts/Ribowave -T 9012445  GSE52799/mRNA/SRR1039761.RPKM -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fly/final.ORFs -o GSE52799/Ribowave -n SRR1039770 -s scripts -p 8;
@@ -322,7 +322,7 @@ scripts/Ribowave -PD -T 9012445  GSE52799/mRNA/SRR1039761.RPKM -a GSE52799/bedgr
 - **`bedgraph/name`**:
 	- <P-site track\> : output from the previous step, containing the P-site track of transcripts of interest, eg: `final.psite`
 
-- <ORF_list> : ORFs of interest ,eg : `final.ORFs`
+- <ORF_list> : ORFs of interest ,eg : `final.ORFs`. It is generated in the step of `create_annotation.sh`
 
 - <Ribo-seq total reads\> : the total number of Ribo-seq reads to calculate FPKM , eg: `9012445`
 
@@ -350,7 +350,7 @@ Column8		| Reads intensity at start codon
 
 **`result`** directory, including :
 
-* _name_.95%.mx 	: the final translated product of RiboWave with translation initiation sites specified (**p.value < 0.05**) . It may look like this :
+* _name_.95%.mx 	: the final translated product predicted RiboWave with its translation initiation site specified (**p.value < 0.05**) . It may look like this :
 
 ```
 FBtr0070007_2_93_1028
