@@ -68,12 +68,12 @@ Options:
 Run `create_annotation.sh` on example:
 
 ```
-scripts/create_annotation.sh -G annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.90.gtf -f annotation_yeast/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa -o annotation_yeast -s scripts;
+scripts/create_annotation.sh -G annotation_fly/dmel-all-r6.18.gtf -f annotation_fly/dmel-all-chromosome-r6.18.fasta  -o annotation_fly  -s scripts;
 ```
 
 #### Input files:
-- <annotation.gtf> : the annotation gtf should contain **start_codon** and **stop_codon** information,eg: `Saccharomyces_cerevisiae.R64-1-1.90.gtf` 
-- <genome.fasta> : genome fasta ,eg: `Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa` 
+- <annotation.gtf> : the annotation gtf should contain **start_codon** and **stop_codon** information,eg: `dmel-all-r6.18.gtf` 
+- <genome.fasta> : genome fasta ,eg: `dmel-all-chromosome-r6.18.fasta` 
 
 - <annotation_dir> :  the directory for all the annotation output
 
@@ -85,7 +85,7 @@ scripts/create_annotation.sh -G annotation_yeast/Saccharomyces_cerevisiae.R64-1-
 
 * start_codon.bed 	: annotated start codon 
 
-* final.ORFs 	: all ORFs, eg: `YAL001C_0_1_3480` where `YAL001C` refers to the transcript, `0` refers to the reading frame relative to the start of transcript, `1` refers to the start site, `3480` refers to the stop codon.  
+* final.ORFs 	: all ORFs, eg: `FBtr0300105_0_31_546` where `FBtr0300105` refers to the transcript, `0` refers to the reading frame relative to the start of transcript, `31` refers to the start site, `546` refers to the stop codon.  
 
 ### 1. P-site determination
 
@@ -120,7 +120,7 @@ Options:
 Run `P-site_determination.sh` on example :
 
 ```
-scripts/P-site_determination.sh  -i GSE52968/SRR1042853.sort.bam  -S annotation_yeast/start_codon.bed  -o GSE52968  -n SRR1042853  -s scripts;
+scripts/P-site_determination.sh  -i GSE52799/SRR1039770.sort.bam  -S annotation_fly/start_codon.bed  -o GSE52799 -n SRR1039770   -s scripts;
 ```
 
 #### Input files:
@@ -129,9 +129,9 @@ scripts/P-site_determination.sh  -i GSE52968/SRR1042853.sort.bam  -S annotation_
 - **`annotation`**  : 
   - <start_codon.bed> : annotated start site `start_codon.bed` 
 
-- <out_dir> 	: the directory of the output result, eg: `GSE52968`
+- <out_dir> 	: the directory of the output result, eg: `GSE52799`
 
-- <study_name> 	: the name of all the output file, default: test. eg: `SRR1042853` 
+- <study_name> 	: the name of all the output file, default: test. eg: `SRR1039770` 
 
 - <scripts_dir>	: the directory of all the scripts in the package
 
@@ -142,12 +142,7 @@ scripts/P-site_determination.sh  -i GSE52968/SRR1042853.sort.bam  -S annotation_
 * _name_.psite1nt.txt 	: the P-sites position (= offset + 1) for each length. It may look this this : 
   
   ```
-  25	10
-  26	11
-  27	12
-  28	13
-  29	11
-  30	12
+  30	13
   ```
   
 * _name_.psite.pdf 	: the pdf displaying the histogram of aggregated reads
@@ -185,38 +180,33 @@ Options:
 ```
 
 Run `create_track_Ribo.sh` on example:
+###### Just look at transcripts from chromosome X :
 
 ```
-scripts/create_track_Ribo.sh  -i GSE52968/SRR1042853.sort.bam  -G annotation_yeast/exons.gtf  -g annotation_yeast/genome -P GSE52968/P-site/SRR1042853.psite1nt.txt  -o GSE52968 -n SRR1042853 -s scripts;
-```
-
-or to just look at transcripts from chromosome X :
-
-```
-scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly/chrX.exons.gtf -g annotation_fly/genome -P GSE52799/P-site/SRR1039770.psite1nt.txt  -o GSE52799 -n SRR1039770 -s scripts;
+scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly/X.exons.gtf  -g annotation_fly/genome  -P GSE52799/P-site/SRR1039770.psite1nt.txt -o GSE52799 -n SRR1039770 -s scripts;
 ```
 
 #### Input files:
 
 - <Ribo_bam> 
 
-- <exons.gtf> :  a gtf file for only the exons from transcripts of intersect, eg: `chrX.exons.gtf`, `exons.gtf`
+- <exons.gtf> :  a gtf file for only the exons from transcripts of intersect, eg: `chrX.exons.gtf`
 
 - <genome\> :  the file including all the chromosomes and its length, `genome` may look like this:
     
     ```
-    I 230218
-    II  813184
-    III 316620
-    IV  1531933
+    2L	23513712
+    2R	25286936
+    3L	28110227
+    3R	32079331
     ```
 
 - **`P-site`**  : 
 	- <P-site_position> :  the file listing the P-site position for each read length. This file can be found in the output of previous step, eg: _name_.psite1nt.txt
 
-- <out_dir> 	: the directory of the output result, eg: `GSE52968`
+- <out_dir> 	: the directory of the output result, eg: `GSE52799`
 
-- <study_name> 	: the name of all the output file, default: test. eg: `SRR1042853` 
+- <study_name> 	: the name of all the output file, default: test. eg: `SRR1039770` 
 
 - <scripts_dir> 	: the directory of all the scripts in the package
 
@@ -227,9 +217,10 @@ scripts/create_track_Ribo.sh  -i GSE52799/SRR1039770.sort.bam  -G annotation_fly
 * final.psite 	: P-site track for each interested transcript. It may look like this : 
   
   ```
-  YAL044C 3,0,0,3,10,0,0,0,0,2,0,0,36,0,0,4,0,0,0,6,0,12,0,7,32,0,0,6,7,9,19,2,5,28,0,0,0,0,0,0,0,0,0,0,4,0,0,0,24,0,1,34,0,1,9,2,0,8,0,0,0,0,0,38,0,4,33,0,10,24,0,8,2,0,6,16,0,0,2,0,0,4,0,0,0,2,0,
-  YAL045C 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-  YAL046C 3,0,0,2,0,0,4,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,1,0,0,16,0,0,6,0,0,0,0,0,12,0,0,19,0,0,0,0,0,5,0,1,5,0,0,0,0,1,6,0,0,0,0,0,14,0,0,2,0,0,7,0
+  FBtr0070533	0,0,0,0,0,0,0,0,0,0,0,0,6,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,0,0,1,0,2,1,0,0,0,0,0,0,4,8,0,0,3,0,5,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+  FBtr0073886	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,25,0,0,0,0,0,0,0,0,0,0,0,0,0
+  FBtr0070604	0,0,0,0,0,0,0,0,0,0,0,0,59,6,0,1,0,0,2,6,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+  FBtr0070603	0,0,0,0,0,0,0,0,0,0,0,0,75,2,7,10,7,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,3,3,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
   ```
   
 ## Main function
@@ -288,39 +279,42 @@ Run `Ribowave` on example:
 ##### Denoise the P-site track
 
 ```
-scripts/Ribowave -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+mkdir -p Ribowave;
+scripts/Ribowave  -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fly/final.ORFs -o GSE52799/Ribowave -n SRR1039770 -s scripts -p 8;
 ```
 
 ##### Identifying translated ORF
 
 ```
-scripts/Ribowave -P -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/Ribowave -P -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fly/final.ORFs -o GSE52799/Ribowave -n SRR1039770 -s scripts -p 8;
 ```
 
 ##### Estimating abundance 
 
 ```
-scripts/Ribowave -D -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/Ribowave -D -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fly/final.ORFs -o GSE52799/Ribowave -n SRR1039770 -s scripts -p 8;
 ```
 
 ##### Estimating TE
 IMPORTANT :
-when estimating TE, user should input the ** number of total Ribo-seq reads** and the **FPKM value of paired RNA-seq**
+when estimating TE, user should input the ** number of total Ribo-seq reads ** and the **FPKM value of paired RNA-seq**
 
 ```
-scripts/Ribowave -T 12378563 GSE52968/mRNA/SRR1042851.FPKM -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+scripts/Ribowave -T 9012445  GSE52799/mRNA/SRR1039761.RPKM -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fly/final.ORFs -o GSE52799/Ribowave -n SRR1039770 -s scripts -p 8;
 ```
 
 ##### Calculating frameshift potential 
+###### on annotated ORFs
 
 ```
-scripts/Ribowave -F -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968 -n SRR1042853 -s scripts -p 8;
+awk -F '\t' '$3=="anno"'  annotation_fly/final.ORFs  >   annotation_fly/aORF.ORFs;
+scripts/Ribowave -F -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fly/aORF.ORFs -o GSE52799/Ribowave -n SRR1039770 -s scripts -p 8;
 ```
 
 ##### Multiple functions 
 
 ```
-scripts/Ribowave -PDF -T 12378563 GSE52968/mRNA/SRR1042851.FPKM -a GSE52968/bedgraph/SRR1042853/final.psite -b annotation_yeast/final.ORFs -o GSE52968/Ribowave   -n SRR1042853 -s scripts -p 8;
+scripts/Ribowave -PD -T 9012445  GSE52799/mRNA/SRR1039761.RPKM -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fly/final.ORFs -o GSE52799/Ribowave -n SRR1039770 -s scripts -p 8;
 ```
 
 #### Input files:
@@ -330,16 +324,16 @@ scripts/Ribowave -PDF -T 12378563 GSE52968/mRNA/SRR1042851.FPKM -a GSE52968/bedg
 
 - <ORF_list> : ORFs of interest ,eg : `final.ORFs`
 
-- <Ribo-seq total reads\> : the total number of Ribo-seq reads to calculate FPKM , eg: `12378563`
+- <Ribo-seq total reads\> : the total number of Ribo-seq reads to calculate FPKM , eg: `9012445`
 
 - <RNA FPKM\> : FPKM table. It may look like this :
 
 	```
-	YAL067W-A       0
-	YAL064C-A       0.834264
-	YAL066W 	0.452034
-	YAL067C 	3.0719
-	YAL064W-B       5.00558
+	FBtr0100871	22262
+	FBtr0070604	18682
+	FBtr0100231	14746.5
+	FBtr0100874	14024.5
+	FBtr0100864	11475.6
 	```
 
 #### Output files:
@@ -359,9 +353,9 @@ Column8		| Reads intensity at start codon
 * _name_.95%.mx 	: the final translated product of RiboWave with translation initiation sites specified (**p.value < 0.05**) . It may look like this :
 
 ```
-YBR073W_0_103_2874
-YBR152W_0_406_873
-YBR197C_0_292_651
+FBtr0070007_2_93_1028
+FBtr0070008_1_128_943
+FBtr0070025_2_135_1094
 ```
 
 * _name_.density	: reads density ( **PF P-site** ) of given ORFs. It may look like this : 
@@ -390,15 +384,13 @@ Column | Explanation
 Column1 | ORF
 Column2		| Start of gap region 
 Column3		| Stop of gap region
-Column4		| Reading frames after the shift ,eg: `0_7,2_2` where `0_7` refers to continuous seven PF P-sites of frame 0 followed by continuous two PF P-sites of frame 2.
-Column5		| Corresponding PF P-sites position after the shift ,eg : `1996,2152,2197,2437,2569,2596,2605;2712,2907` where `1996,2152,2197,2437,2569,2596,2605` corresponds to the exact position of `0_7` within the transcript. Discontinuity in the reading frame is separated by `;`
-Column6		| F1 score describing the extent of change in the reading frame before and after the gap
-Column7 	| F2 score describing the extent of reading frame consistency before and after the gap
-Column8		| Fscore describing the potential of frameshift 
+Column4		| Reading frames after the change point ,eg: `2_2,0_1` where `2_2` refers to continuous two PF P-sites of frame 2 followed by continuous one PF P-sites of frame 0.
+Column5		| Corresponding PF P-sites position after the shift ,eg : `1413,1440;1789` where `1413,1440` corresponds to the exact position of `2_2` within the transcript. Discontinuity in the reading frame is separated by `;`
+Column6		| CRF score describing the potential of frameshift 
 
 
 ## Example file
 An example file is packed and found in [here](http://lulab.life.tsinghua.edu.cn/RiboWave/RiboWave_v1.0.tar.gz).
 
-Enclosed in the RiboWave_v1.0.tar.gz, `run_Ribowave_yeast.sh` combines all the steps together into a pipeline. 
+Enclosed in the RiboWave_v1.0.tar.gz, `run_Ribowave_dmel.sh` combines all the steps together into a pipeline. 
 
