@@ -1,6 +1,6 @@
 # RiboWave 
 
-RiboWave analyses Ribosome profiling data (Ribo-seq). It utilizes wavelet transform to denoise the original signal by extracting 3-nt periodicity (i.e. frequency) of ribosomes and precisely locate their footprint. 
+RiboWave analyses Ribosome profiling data (Ribo-seq). It utilizes wavelet transform to denoise the original signal by extracting 3-nt periodicity of ribosomes (i.e. signal frequency) and precisely locate their footprint. 
 
 >Translation is dynamically regulated during cell development and stress response. In order to detect actively translated open reading frame (ORF) and dynamic cellular translation events, we have developed a computational method, RiboWave, to process ribosome profiling data. RiboWave utilizes wavelet transform to denoise the original signal by extracting 3-nt periodicity of ribosomes and precisely locate their footprint denoted as Periodic Footprint P-site (PF P-site). Such high-resolution footprint is found to capture the full track of actively elongating ribosomes, from which translational landscape can be explicitly characterized. 
 
