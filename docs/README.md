@@ -1,4 +1,4 @@
-# RiboWave 
+# Ribo-seq data analysis tool 
 
 RiboWave analyses Ribosome profiling data (Ribo-seq). It utilizes wavelet transform to denoise the original signal by extracting 3-nt periodicity of ribosomes (i.e. signal frequency) and precisely locate their footprint. 
 
