@@ -169,7 +169,8 @@ Usage:
 	 create_track_Ribo.sh [-h] -i Ribo.bam -G exons.gtf -g genome_size -P psite.position -o out_dir -s scripts_dir [-n study name]
 
 Options:
-	-G	<filename>	(Ribo-seq bam                                      )
+	-i	<filename>	(Ribo-seq bam                                      )
+	-G	<filename>	(exons gtf file                                    )
 	-g	<filename>	(Genome size annotation file                       )
 	-P	<filename>	(P-site position (offset+1)                        )
 	-o	<directory>	(Output annotation directory                       )
@@ -190,9 +191,9 @@ scripts/create_track_Ribo.sh -i GSE52799/SRR1039770.sort.bam -G annotation_fly/X
 
 - <Ribo_bam> 
 
-- <exons.gtf> :  a gtf file for only the exons from transcripts of intersect, eg: `chrX.exons.gtf`
+- <exons.gtf> :  a gtf file for only the exons from transcripts of intersect, eg: `X.exons.gtf`
 
-- <genome\> :  the file including all the chromosomes and its length, `genome` may look like this:
+- <genome\> :  the file including all the chromosomes and its length(size), `genome` may look like this:
     
     ```
     2L	23513712
