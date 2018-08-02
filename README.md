@@ -83,13 +83,13 @@ scripts/create_annotation.sh -G annotation_fly/dmel-all-r6.18.gtf -f annotation_
 
 **`annotation`** directory, including :
 
-* start_codon.bed 	: annotated start codon 
+* start_codon.bed 	: the bed file annotating start codon 
 
-* final.ORFs 	: all ORFs, eg: `FBtr0300105_0_31_546` where `FBtr0300105` refers to the transcript, `0` refers to the reading frame relative to the start of transcript, `31` refers to the start site, `546` refers to the stop codon.  
+* final.ORFs 	: all identified ORFs, eg: `FBtr0300105_0_31_546` where `FBtr0300105` refers to the transcript, `0` refers to the reading frame relative to the start of transcript, `31` refers to the start site, `546` refers to the stop codon.  
 
 ### 1. P-site determination
 
-This step determines the P-site position for each read length by overlapping with the annotated start codons 
+This step determines the P-site position for each Ribo-seq reads length by overlapping with the annotated start codons from previous step
 
 ```
 ./P-site_determination.sh -h
@@ -139,18 +139,18 @@ scripts/P-site_determination.sh -i GSE52799/SRR1039770.sort.bam -S annotation_fl
 #### Output files:
 **`P-site`** directory, including :
 
-* _name_.psite1nt.txt 	: the P-sites position (= offset + 1) for each length. It may look this this : 
+* _name_.psite1nt.txt 	: the Ribo-seq reads length and its corresponding P-sites position(= offset + 1). It may look this this : 
   
   ```
   30	13
   ```
   
-* _name_.psite.pdf 	: the pdf displaying the histogram of aggregated reads
+* _name_.psite.pdf 	: the **PDF** displaying the histogram of aggregated reads
 
 
 ### 2. Generating P-site track 
 
-This step creats the P-site track for transcripts of interests
+This step creats the P-site track for transcripts of interests using determined P-sites position from previous step.
 
 ```
 ./create_track_Ribo.sh -h
@@ -181,7 +181,7 @@ Options:
 ```
 
 Run `create_track_Ribo.sh` on example:
-###### Just look at transcripts from chromosome X :
+###### look at transcripts from chromosome X :
 
 ```
 scripts/create_track_Ribo.sh -i GSE52799/SRR1039770.sort.bam -G annotation_fly/X.exons.gtf -g annotation_fly/genome -P GSE52799/P-site/SRR1039770.psite1nt.txt -o GSE52799 -n SRR1039770 -s scripts;
@@ -193,13 +193,13 @@ scripts/create_track_Ribo.sh -i GSE52799/SRR1039770.sort.bam -G annotation_fly/X
 
 - <exons.gtf> :  a gtf file for only the exons from transcripts of intersect, eg: `X.exons.gtf`
 
-- <genome\> :  the file including all the chromosomes and its length(size), `genome` may look like this:
+- <genome\> :  the file including all the chromosomes and its genome size which can be inferred from the input *fasta* file.`genome` may look like this:
     
     ```
     2L	23513712
     2R	25286936
     3L	28110227
-    3R	32079331
+    3R	32079331 
     ```
 
 - **`P-site`**  : 
@@ -215,7 +215,7 @@ scripts/create_track_Ribo.sh -i GSE52799/SRR1039770.sort.bam -G annotation_fly/X
 
 **`bedgraph/name`** directory, including :
 
-* final.psite 	: P-site track for each interested transcript. It may look like this : 
+* final.psite 	: P-site track at transcriptome wide. It may look like this : 
   
   ```
   FBtr0070533	0,0,0,0,0,0,0,0,0,0,0,0,6,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,0,0,1,0,2,1,0,0,0,0,0,0,4,8,0,0,3,0,5,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -261,7 +261,7 @@ Options:
 	-P	                    	(providing P value for each ORF                    )
 	-D	                    	(providing reads abundance for each ORF            )
 	-F	                    	(predicting frameshift potential for each ORF      )
-	-T	<int>  <RNA_FPKM>   	(estimating TE for each ORF.<int> requires total Ribo-seq reads number;<RNA_FPKM> requires RNA-seq FPKM)
+	-T	<int>  <RNA_FPKM>   	(estimating TE for each ORF.<int> requires total Ribo-seq sequence depth;<RNA_FPKM> requires RNA-seq FPKM)
 	-a	<filename>          	(psite track                                       )
 	-b	<filename>          	(ORF list                                          )
 	-o	<directory>         	(Output directory                                  )
@@ -287,20 +287,23 @@ scripts/Ribowave  -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fly/
 ##### Identifying translated ORF
 
 ```
+mkdir -p Ribowave;
 scripts/Ribowave -P -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fly/final.ORFs -o GSE52799/Ribowave -n SRR1039770 -s scripts -p 8;
 ```
 
 ##### Estimating abundance 
 
 ```
+mkdir -p Ribowave;
 scripts/Ribowave -D -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fly/final.ORFs -o GSE52799/Ribowave -n SRR1039770 -s scripts -p 8;
 ```
 
 ##### Estimating TE
 IMPORTANT :
-when estimating TE, user should input the **number of total Ribo-seq reads** and the **FPKM value from paired RNA-seq**
+when estimating TE, user should input the **sequenced depth of Ribo-seq** and the **FPKM value from paired RNA-seq**
 
 ```
+mkdir -p Ribowave;
 scripts/Ribowave -T 9012445  GSE52799/mRNA/SRR1039761.RPKM -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fly/final.ORFs -o GSE52799/Ribowave -n SRR1039770 -s scripts -p 8;
 ```
 
@@ -308,6 +311,7 @@ scripts/Ribowave -T 9012445  GSE52799/mRNA/SRR1039761.RPKM -a GSE52799/bedgraph/
 ###### on annotated ORFs
 
 ```
+mkdir -p Ribowave;
 awk -F '\t' '$3=="anno"'  annotation_fly/final.ORFs  >   annotation_fly/aORF.ORFs;
 scripts/Ribowave -F -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fly/aORF.ORFs -o GSE52799/Ribowave -n SRR1039770 -s scripts -p 8;
 ```
@@ -315,6 +319,7 @@ scripts/Ribowave -F -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fl
 ##### Multiple functions 
 
 ```
+mkdir -p Ribowave;
 scripts/Ribowave -PD -T 9012445  GSE52799/mRNA/SRR1039761.RPKM -a GSE52799/bedgraph/SRR1039770/final.psite -b annotation_fly/final.ORFs -o GSE52799/Ribowave -n SRR1039770 -s scripts -p 8;
 ```
 
@@ -325,7 +330,7 @@ scripts/Ribowave -PD -T 9012445  GSE52799/mRNA/SRR1039761.RPKM -a GSE52799/bedgr
 
 - <ORF_list> : ORFs of interest ,eg : `final.ORFs`. It is generated in the step of `create_annotation.sh`
 
-- <Ribo-seq total reads\> : the total number of Ribo-seq reads to calculate FPKM , eg: `9012445`
+- <Ribo-seq sequenced depth\> : the sequenced depth of Ribo-seq to calculate FPKM , eg: `9012445`
 
 - <RNA FPKM\> : FPKM table. It may look like this :
 
@@ -338,6 +343,7 @@ scripts/Ribowave -PD -T 9012445  GSE52799/mRNA/SRR1039761.RPKM -a GSE52799/bedgr
 	```
 
 #### Output files:
+* _name_.PF_psite	: the denoised signal track(PF P-sites signal track) at transcriptome wide. It looks similar as the input `final psite`.
 
 * _name_.feats1 	: the features of ORFs including chi-square P-value information. It may look like this :
 
@@ -351,7 +357,7 @@ Column8		| Reads intensity at start codon
 
 **`result`** directory, including :
 
-* _name_.95%.mx 	: the final translated product predicted RiboWave with its translation initiation site specified (**p.value < 0.05**) . It may look like this :
+* _name_.95%.mx 	: RiboWave makes the prediction on the translation initiation sites and gives the final translated product output (**p.value < 0.05**) . It may look like this :
 
 ```
 FBtr0070007_2_93_1028
@@ -383,10 +389,10 @@ Column3		| TE
 Column | Explanation	
 ------------ | -------------
 Column1 | ORF
-Column2		| Start of gap region 
-Column3		| Stop of gap region
-Column4		| Reading frames after the change point ,eg: `2_2,0_1` where `2_2` refers to continuous two PF P-sites of frame 2 followed by continuous one PF P-sites of frame 0.
-Column5		| Corresponding PF P-sites position after the shift ,eg : `1413,1440;1789` where `1413,1440` corresponds to the exact position of `2_2` within the transcript. Discontinuity in the reading frame is separated by `;`
+Column2		| Start of frameshift  
+Column3		| Stop of frameshift
+Column4		| PF P-sites' reading frames **after** the change point ,eg: `2_2,0_1` where `2_2` refers to continuous two PF P-sites of frame 2 followed by continuous one PF P-sites of frame 0.
+Column5		| Relative position of PF P-sites **after** the shift ,eg : `1413,1440;1789` where `1413,1440` corresponds to the exact position of `2_2` within the transcript. Discontinuity in the reading frame is separated by `;`
 Column6		| CRF score describing the potential of frameshift 
 
 
