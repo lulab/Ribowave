@@ -43,7 +43,8 @@ function HELP
         printf -v line '%*s' "100"; echo -e "${line// /-}\n";
         echo -e "${BOLD}Usage:${NORM}\n\t ${SCRIPT} [-h] -i Ribo.bam -G exons.gtf -g genome_size -P psite.position -o out_dir -s scripts_dir [-n study name]"\\n;
         echo -e "${BOLD}Options:${NORM}";
-        printf "\t%2s\t%-10s\t%1s%-50s%1s\n" "-G" "<filename>" "(" "Ribo-seq bam" ")"
+	printf "\t%2s\t%-10s\t%1s%-50s%1s\n" "-i" "<filename>" "(" "Ribo-seq bam" ")"
+        printf "\t%2s\t%-10s\t%1s%-50s%1s\n" "-G" "<filename>" "(" "exons gtf file" ")"
         printf "\t%2s\t%-10s\t%1s%-50s%1s\n" "-g" "<filename>" "(" "Genome size annotation file" ")"
 	printf "\t%2s\t%-10s\t%1s%-50s%1s\n" "-P" "<filename>" "(" "P-site position (offset+1)" ")"
         printf "\t%2s\t%-10s\t%1s%-50s%1s\n" "-o" "<directory>" "(" "Output annotation directory" ")"
