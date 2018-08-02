@@ -401,3 +401,6 @@ An example file is packed and found in [here](http://lulab.life.tsinghua.edu.cn/
 
 Enclosed in the RiboWave_v1.0.tar.gz, `run_Ribowave_dmel.sh` combines all the steps together into a pipeline. 
 
+## For any questions, please contact:
+
+Zhiyu Xu [xanthexu18@gmail.com]
