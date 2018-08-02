@@ -70,11 +70,11 @@ while getopts :i:G:g:P:o:s:n:h FLAG; do
                 gtf=$OPTARG
                 #echo "-G used:$OPTARG"
                 ;;
-                g) #set genome size  "f"
+                g) #set genome size  "g"
                 genome=$OPTARG
                 #echo "-g used:$OPTARG"
                 ;;
-		P) #set P-site position  "f"
+		P) #set P-site position  "P"
                 P_site=$OPTARG
                 #echo "-P used:$OPTARG"
                 ;;
